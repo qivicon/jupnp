@@ -65,7 +65,7 @@ public class DatagramProcessorImpl implements DatagramProcessor {
             }
 
         } catch (Exception ex) {
-            throw new UnsupportedDataException("Could not parse headers: " + ex, ex);
+            throw new UnsupportedDataException("Could not parse headers: " + ex, ex, datagram.getData());
         }
     }
 
@@ -114,7 +114,9 @@ public class DatagramProcessorImpl implements DatagramProcessor {
             return new DatagramPacket(data, data.length, message.getDestinationAddress(), message.getDestinationPort());
 
         } catch (UnsupportedEncodingException ex) {
-            throw new UnsupportedDataException("Can't convert message content to US-ASCII: " + ex.getMessage(), ex);
+            throw new UnsupportedDataException(
+                "Can't convert message content to US-ASCII: " + ex.getMessage(), ex, messageData
+            );
         }
     }
 
