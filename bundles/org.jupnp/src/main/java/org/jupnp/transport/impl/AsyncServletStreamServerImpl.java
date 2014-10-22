@@ -18,16 +18,17 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import javax.servlet.AsyncContext;
-import javax.servlet.AsyncEvent;
-import javax.servlet.AsyncListener;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.jupnp.model.message.Connection;
+import org.jupnp.servlet.AsyncContext;
+import org.jupnp.servlet.AsyncEvent;
+import org.jupnp.servlet.AsyncListener;
+import org.jupnp.servlet.http.AsyncHttpServlet;
+import org.jupnp.servlet.http.AsyncHttpServletRequest;
 import org.jupnp.transport.Router;
 import org.jupnp.transport.spi.InitializationException;
 import org.jupnp.transport.spi.StreamServer;
@@ -38,6 +39,7 @@ import org.slf4j.LoggerFactory;
  * Implementation based on Servlet 3.0 API.
  *
  * @author Christian Bauer
+ * @author Michael Grammling - Refactored so that it can also work with Servlet 2.5
  */
 public class AsyncServletStreamServerImpl implements StreamServer<AsyncServletStreamServerConfigurationImpl> {
 
@@ -90,33 +92,29 @@ public class AsyncServletStreamServerImpl implements StreamServer<AsyncServletSt
     private int mCounter = 0;
 
     protected Servlet createServlet(final Router router) {
-        return new HttpServlet() {
+        return new AsyncHttpServlet() {
             @Override
-            protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+            protected void service(AsyncHttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             	final long startTime = System.currentTimeMillis();
             	final int counter = mCounter++;
             	log.info(String.format("HttpServlet.service(): id: %3d, request URI: %s", counter, req.getRequestURI()));
                 log.debug("Handling Servlet request asynchronously: " + req);
 
                 AsyncContext async = req.startAsync();
-                async.setTimeout(getConfiguration().getAsyncTimeoutSeconds()*1000);
+                async.setTimeout(getConfiguration().getAsyncTimeoutSeconds() * 1000);
 
                 async.addListener(new AsyncListener() {
-
                     @Override
                     public void onTimeout(AsyncEvent arg0) throws IOException {
                         long duration = System.currentTimeMillis() - startTime;
                         log.warn(String.format("AsyncListener.onTimeout(): id: %3d, duration: %,4d, request: %s", counter, duration, arg0.getSuppliedRequest()));
                     }
 
-
                     @Override
                     public void onStartAsync(AsyncEvent arg0) throws IOException {
-                        // useless
+                        // not needed
                         log.debug(String.format("AsyncListener.onStartAsync(): id: %3d, request: %s", counter, arg0.getSuppliedRequest()));
                     }
-
 
                     @Override
                     public void onError(AsyncEvent arg0) throws IOException {
@@ -124,13 +122,11 @@ public class AsyncServletStreamServerImpl implements StreamServer<AsyncServletSt
                         log.warn(String.format("AsyncListener.onError(): id: %3d, duration: %,4d, response: %s", counter, duration, arg0.getSuppliedResponse()));
                     }
 
-
                     @Override
                     public void onComplete(AsyncEvent arg0) throws IOException {
                         long duration = System.currentTimeMillis() - startTime;
                         log.info(String.format("AsyncListener.onComplete(): id: %3d, duration: %,4d, response: %s", counter, duration, arg0.getSuppliedResponse()));
                     }
-
                 });
 
                 AsyncServletUpnpStream stream =
