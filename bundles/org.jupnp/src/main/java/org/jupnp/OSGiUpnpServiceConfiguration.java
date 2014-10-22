@@ -55,10 +55,10 @@ import org.jupnp.transport.spi.GENAEventProcessor;
 import org.jupnp.transport.spi.MulticastReceiver;
 import org.jupnp.transport.spi.NetworkAddressFactory;
 import org.jupnp.transport.spi.SOAPActionProcessor;
+import org.jupnp.transport.spi.ServletContainerAdapter;
 import org.jupnp.transport.spi.StreamClient;
 import org.jupnp.transport.spi.StreamServer;
 import org.jupnp.util.Exceptions;
-import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.http.HttpService;
 import org.slf4j.Logger;
@@ -89,6 +89,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Christian Bauer
  * @author Kai Kreuzer - introduced bounded thread pool and http service streaming server
+ * @author Michael Grammling - FIXED some issues where multiple ServletContainerAdapters were created
  */
 public class OSGiUpnpServiceConfiguration implements UpnpServiceConfiguration {
 
@@ -113,9 +114,8 @@ public class OSGiUpnpServiceConfiguration implements UpnpServiceConfiguration {
     private Namespace namespace;
 
 	private HttpService httpService;
+	private ServletContainerAdapter servletContainerAdapter;
 
-	@SuppressWarnings("rawtypes")
-	private ServiceRegistration serviceReg;
 
     /**
      * Defaults to port '0', ephemeral.
@@ -147,7 +147,6 @@ public class OSGiUpnpServiceConfiguration implements UpnpServiceConfiguration {
     }
 
     protected void activate(Map<String, Object> configProps) throws ConfigurationException {
-    	    	
     	createConfiguration(configProps);
     	
         defaultExecutorService = createDefaultExecutorService();
@@ -163,9 +162,6 @@ public class OSGiUpnpServiceConfiguration implements UpnpServiceConfiguration {
     }
     
     protected void deactivate() {
-    	if(serviceReg!=null) {
-    		serviceReg.unregister();
-    	}
     	shutdown();
     }
     
@@ -213,12 +209,19 @@ public class OSGiUpnpServiceConfiguration implements UpnpServiceConfiguration {
         return new DatagramIOImpl(new DatagramIOConfigurationImpl());
     }
 
+    private synchronized ServletContainerAdapter getServletContainerAdapter(HttpService httpService) {
+        if (this.servletContainerAdapter == null) {
+            this.servletContainerAdapter = new HttpServiceServletContainerAdapter(httpService);
+        }
+
+        return this.servletContainerAdapter;
+    }
+
     @SuppressWarnings("rawtypes")
 	public StreamServer createStreamServer(NetworkAddressFactory networkAddressFactory) {
-    	if(httpService!=null) {
-	    	return new AsyncServletStreamServerImpl(
-	                new AsyncServletStreamServerConfigurationImpl(new HttpServiceServletContainerAdapter(httpService))
-	        );
+    	if (httpService != null) {
+	    	return new AsyncServletStreamServerImpl(new AsyncServletStreamServerConfigurationImpl(
+	    	        getServletContainerAdapter(httpService)));
     	} else {
 	    	return new StreamServerImpl(new StreamServerConfigurationImpl());
     	}
@@ -306,10 +309,12 @@ public class OSGiUpnpServiceConfiguration implements UpnpServiceConfiguration {
     }
 
     public void shutdown() {
-    	if(getDefaultExecutorService()!=null) {
+    	if (getDefaultExecutorService() != null) {
 	    	log.debug("Shutting down default executor service");
 	        getDefaultExecutorService().shutdownNow();
     	}
+
+	    this.servletContainerAdapter = null;
     }
 
     protected NetworkAddressFactory createNetworkAddressFactory(int streamListenPort, int multicastResponsePort) {
