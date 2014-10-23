@@ -75,7 +75,7 @@ public class UpnpServiceImpl implements UpnpService {
     protected void setOSGiUpnpServiceConfiguration(OSGiUpnpServiceConfiguration configuration) {
     	this.configuration = configuration;
     	if (isRunning) {
-    		restart(false);
+    		restart(true);
     	}
     }
 

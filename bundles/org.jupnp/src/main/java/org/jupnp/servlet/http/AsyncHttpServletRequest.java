@@ -19,7 +19,7 @@ public class AsyncHttpServletRequest extends HttpServletRequestWrapper
         this.asyncHttpServlet = asyncHttpServlet;
     }
 
-    public AsyncContext startAsync() {
+    public AsyncContext startAsync2() {
         this.asyncContext = new AsyncContextImpl(
                 super.getRequest(), this.asyncHttpServlet.getResponse());
 
@@ -30,7 +30,7 @@ public class AsyncHttpServletRequest extends HttpServletRequestWrapper
         return (this.asyncContext != null);
     }
 
-    public AsyncContext getAsyncContext() throws IllegalStateException {
+    public AsyncContext getAsyncContext2() throws IllegalStateException {
         if (isAsyncStarted()) {
             return this.asyncContext;
         }

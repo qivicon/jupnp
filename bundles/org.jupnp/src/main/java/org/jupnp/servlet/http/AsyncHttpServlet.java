@@ -28,7 +28,7 @@ public abstract class AsyncHttpServlet extends HttpServlet {
 
         // wait for completion
         if (asyncRequest.isAsyncStarted()) {
-            AsyncContextImpl asyncContextImpl = (AsyncContextImpl) asyncRequest.getAsyncContext();
+            AsyncContextImpl asyncContextImpl = (AsyncContextImpl) asyncRequest.getAsyncContext2();
             asyncContextImpl.setStarted();
             asyncContextImpl.waitForCompletion();
         }

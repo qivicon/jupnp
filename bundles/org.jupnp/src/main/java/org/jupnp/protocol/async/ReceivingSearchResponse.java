@@ -14,6 +14,8 @@
 
 package org.jupnp.protocol.async;
 
+import java.util.logging.Logger;
+
 import org.jupnp.UpnpService;
 import org.jupnp.model.ValidationError;
 import org.jupnp.model.ValidationException;
@@ -26,8 +28,6 @@ import org.jupnp.model.types.UDN;
 import org.jupnp.protocol.ReceivingAsync;
 import org.jupnp.protocol.RetrieveRemoteDescriptors;
 import org.jupnp.transport.RouterException;
-
-import java.util.logging.Logger;
 
 /**
  * Handles reception of search response messages.
@@ -48,7 +48,6 @@ public class ReceivingSearchResponse extends ReceivingAsync<IncomingSearchRespon
     }
 
     protected void execute() throws RouterException {
-
         if (!getInputMessage().isSearchResponseMessage()) {
             log.fine("Ignoring invalid search response message: " + getInputMessage());
             return;
@@ -91,10 +90,17 @@ public class ReceivingSearchResponse extends ReceivingAsync<IncomingSearchRespon
 
         // Unfortunately, we always have to retrieve the descriptor because at this point we
         // have no idea if it's a root or embedded device
+try {
         getUpnpService().getConfiguration().getAsyncProtocolExecutor().execute(
                 new RetrieveRemoteDescriptors(getUpnpService(), rd)
         );
-
+} catch (Exception ex) {
+    System.out.println("##### PROBLEM!!!!: " + ex.getMessage());
+    System.out.println("##### P1: " + getUpnpService());
+    System.out.println("##### P2: " + getUpnpService().getConfiguration());
+    System.out.println("##### P3: " + getUpnpService().getConfiguration().getAsyncProtocolExecutor());
+    System.out.println("##### P4: " + rd);
+}
     }
 
 }

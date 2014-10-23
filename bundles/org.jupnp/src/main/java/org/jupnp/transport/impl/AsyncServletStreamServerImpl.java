@@ -100,7 +100,7 @@ public class AsyncServletStreamServerImpl implements StreamServer<AsyncServletSt
             	log.info(String.format("HttpServlet.service(): id: %3d, request URI: %s", counter, req.getRequestURI()));
                 log.debug("Handling Servlet request asynchronously: " + req);
 
-                AsyncContext async = req.startAsync();
+                AsyncContext async = req.startAsync2();
                 async.setTimeout(getConfiguration().getAsyncTimeoutSeconds() * 1000);
 
                 async.addListener(new AsyncListener() {
