@@ -17,6 +17,7 @@ package org.jupnp.protocol.async;
 import java.util.logging.Logger;
 
 import org.jupnp.UpnpService;
+import org.jupnp.UpnpServiceConfiguration;
 import org.jupnp.model.ValidationError;
 import org.jupnp.model.ValidationException;
 import org.jupnp.model.message.IncomingDatagramMessage;
@@ -90,17 +91,13 @@ public class ReceivingSearchResponse extends ReceivingAsync<IncomingSearchRespon
 
         // Unfortunately, we always have to retrieve the descriptor because at this point we
         // have no idea if it's a root or embedded device
-try {
-        getUpnpService().getConfiguration().getAsyncProtocolExecutor().execute(
-                new RetrieveRemoteDescriptors(getUpnpService(), rd)
-        );
-} catch (Exception ex) {
-    System.out.println("##### PROBLEM!!!!: " + ex.getMessage());
-    System.out.println("##### P1: " + getUpnpService());
-    System.out.println("##### P2: " + getUpnpService().getConfiguration());
-    System.out.println("##### P3: " + getUpnpService().getConfiguration().getAsyncProtocolExecutor());
-    System.out.println("##### P4: " + rd);
-}
+        UpnpServiceConfiguration configuration = getUpnpService().getConfiguration();
+        if (configuration != null) {
+            configuration.getAsyncProtocolExecutor().execute(
+                    new RetrieveRemoteDescriptors(getUpnpService(), rd));
+        } else {
+            log.warning("The configuration for the async protocol executor is null.");
+        }
     }
 
 }

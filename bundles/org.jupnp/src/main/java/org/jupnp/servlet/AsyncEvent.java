@@ -25,7 +25,7 @@ public class AsyncEvent {
     public AsyncEvent(AsyncContext asyncContext, Throwable throwable)
             throws IllegalArgumentException {
 
-        if (this.asyncContext == null) {
+        if (asyncContext == null) {
             throw new IllegalArgumentException("The AsyncContext must not be null!");
         }
 

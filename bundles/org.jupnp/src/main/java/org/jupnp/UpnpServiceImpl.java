@@ -69,8 +69,7 @@ public class UpnpServiceImpl implements UpnpService {
         this.protocolFactory = createProtocolFactory();
     	
         this.registry = createRegistry(protocolFactory);
-        
-}
+    }
 
     protected void setOSGiUpnpServiceConfiguration(OSGiUpnpServiceConfiguration configuration) {
     	this.configuration = configuration;
@@ -80,9 +79,11 @@ public class UpnpServiceImpl implements UpnpService {
     }
 
     protected void unsetOSGiUpnpServiceConfiguration(OSGiUpnpServiceConfiguration configuration) {
-    	this.configuration = null;
+        if (this.configuration == configuration) {
+            this.configuration = null;
+        }
     }
-    
+
     protected ProtocolFactory createProtocolFactory() {
         return new ProtocolFactoryImpl(this);
     }

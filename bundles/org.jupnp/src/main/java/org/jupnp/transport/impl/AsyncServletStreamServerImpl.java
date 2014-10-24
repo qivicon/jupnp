@@ -43,10 +43,11 @@ import org.slf4j.LoggerFactory;
  */
 public class AsyncServletStreamServerImpl implements StreamServer<AsyncServletStreamServerConfigurationImpl> {
 
-    final private static Logger log = LoggerFactory.getLogger(AsyncServletStreamServerImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(AsyncServletStreamServerImpl.class);
 
-    final protected AsyncServletStreamServerConfigurationImpl configuration;
+    protected final AsyncServletStreamServerConfigurationImpl configuration;
     protected int localPort;
+
 
     public AsyncServletStreamServerImpl(AsyncServletStreamServerConfigurationImpl configuration) {
         this.configuration = configuration;
@@ -56,7 +57,9 @@ public class AsyncServletStreamServerImpl implements StreamServer<AsyncServletSt
         return configuration;
     }
 
-    synchronized public void init(InetAddress bindAddress, final Router router) throws InitializationException {
+    public synchronized void init(InetAddress bindAddress, final Router router)
+            throws InitializationException {
+
         try {
             log.debug("Setting executor service on servlet container adapter");
             getConfiguration().getServletContainerAdapter().setExecutorService(
@@ -68,12 +71,12 @@ public class AsyncServletStreamServerImpl implements StreamServer<AsyncServletSt
                 bindAddress.getHostAddress(),
                 getConfiguration().getListenPort()
             );
-
             String contextPath = router.getConfiguration().getNamespace().getBasePath().getPath();
-            getConfiguration().getServletContainerAdapter().registerServlet(contextPath, createServlet(router));
-
+            getConfiguration().getServletContainerAdapter().registerServlet(
+                    contextPath, createServlet(router));
         } catch (Exception ex) {
-            throw new InitializationException("Could not initialize " + getClass().getSimpleName() + ": " + ex.toString(), ex);
+            throw new InitializationException("Could not initialize " + getClass().getSimpleName()
+                    + ": " + ex.toString(), ex);
         }
     }
 

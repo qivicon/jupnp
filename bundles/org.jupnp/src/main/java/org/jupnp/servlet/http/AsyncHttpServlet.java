@@ -21,6 +21,8 @@ public abstract class AsyncHttpServlet extends HttpServlet {
     protected final void service(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
 
+        this.response = response;
+
         AsyncHttpServletRequest asyncRequest = new AsyncHttpServletRequest(request, this);
 
         // now execute the code (usually this call returns fast)
@@ -32,6 +34,8 @@ public abstract class AsyncHttpServlet extends HttpServlet {
             asyncContextImpl.setStarted();
             asyncContextImpl.waitForCompletion();
         }
+
+        this.response = null;
     }
 
     protected void service(AsyncHttpServletRequest request, HttpServletResponse response)

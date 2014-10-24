@@ -1,5 +1,6 @@
 package org.jupnp.servlet.impl;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.servlet.ServletRequest;
@@ -47,6 +48,8 @@ public class AsyncContextImpl implements AsyncContext {
         this.response = response;
 
         setTimeout(-1);
+
+        this.listeners = new HashSet<>();
     }
 
     public void setStarted() {

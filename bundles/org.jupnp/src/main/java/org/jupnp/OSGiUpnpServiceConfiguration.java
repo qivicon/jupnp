@@ -55,7 +55,6 @@ import org.jupnp.transport.spi.GENAEventProcessor;
 import org.jupnp.transport.spi.MulticastReceiver;
 import org.jupnp.transport.spi.NetworkAddressFactory;
 import org.jupnp.transport.spi.SOAPActionProcessor;
-import org.jupnp.transport.spi.ServletContainerAdapter;
 import org.jupnp.transport.spi.StreamClient;
 import org.jupnp.transport.spi.StreamServer;
 import org.jupnp.util.Exceptions;
@@ -114,7 +113,7 @@ public class OSGiUpnpServiceConfiguration implements UpnpServiceConfiguration {
     private Namespace namespace;
 
 	private HttpService httpService;
-	private ServletContainerAdapter servletContainerAdapter;
+	private StreamServer streamServer;
 
 
     /**
@@ -209,19 +208,25 @@ public class OSGiUpnpServiceConfiguration implements UpnpServiceConfiguration {
         return new DatagramIOImpl(new DatagramIOConfigurationImpl());
     }
 
-    private synchronized ServletContainerAdapter getServletContainerAdapter(HttpService httpService) {
-        if (this.servletContainerAdapter == null) {
-            this.servletContainerAdapter = new HttpServiceServletContainerAdapter(httpService);
+    @SuppressWarnings("rawtypes")
+    private synchronized StreamServer getStreamServerSingleton(HttpService httpService) {
+        if (this.streamServer == null) {
+            HttpServiceServletContainerAdapter servletContainerAdapter =
+                    new HttpServiceServletContainerAdapter(httpService);
+
+            AsyncServletStreamServerConfigurationImpl streamServerConfig =
+                    new AsyncServletStreamServerConfigurationImpl(servletContainerAdapter);
+
+            this.streamServer = new AsyncServletStreamServerImpl(streamServerConfig);
         }
 
-        return this.servletContainerAdapter;
+        return this.streamServer;
     }
 
     @SuppressWarnings("rawtypes")
 	public StreamServer createStreamServer(NetworkAddressFactory networkAddressFactory) {
     	if (httpService != null) {
-	    	return new AsyncServletStreamServerImpl(new AsyncServletStreamServerConfigurationImpl(
-	    	        getServletContainerAdapter(httpService)));
+    	    return getStreamServerSingleton(httpService);
     	} else {
 	    	return new StreamServerImpl(new StreamServerConfigurationImpl());
     	}
@@ -314,7 +319,7 @@ public class OSGiUpnpServiceConfiguration implements UpnpServiceConfiguration {
 	        getDefaultExecutorService().shutdownNow();
     	}
 
-	    this.servletContainerAdapter = null;
+	    this.streamServer = null;
     }
 
     protected NetworkAddressFactory createNetworkAddressFactory(int streamListenPort, int multicastResponsePort) {
