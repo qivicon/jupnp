@@ -91,12 +91,17 @@ public class ReceivingSearchResponse extends ReceivingAsync<IncomingSearchRespon
 
         // Unfortunately, we always have to retrieve the descriptor because at this point we
         // have no idea if it's a root or embedded device
-        UpnpServiceConfiguration configuration = getUpnpService().getConfiguration();
-        if (configuration != null) {
-            configuration.getAsyncProtocolExecutor().execute(
-                    new RetrieveRemoteDescriptors(getUpnpService(), rd));
+        UpnpService upnpService = getUpnpService();
+        if (upnpService != null) {
+            UpnpServiceConfiguration configuration = upnpService.getConfiguration();
+            if (configuration != null) {
+                configuration.getAsyncProtocolExecutor().execute(
+                        new RetrieveRemoteDescriptors(getUpnpService(), rd));
+            } else {
+                log.warning("The configuration for the async protocol executor is null.");
+            }
         } else {
-            log.warning("The configuration for the async protocol executor is null.");
+            log.warning("The UPnP service is null.");
         }
     }
 
