@@ -37,9 +37,13 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Implementation based on Servlet 3.0 API.
+ * <p>
+ * Refactor the code back to the official Servlet 3.0 API if Servlet 2.5 support should be
+ * given up. There are minor changes needed <i>only</i> in that class to upgrade to the 
+ * Servlet 3.0 API again.
  *
  * @author Christian Bauer
- * @author Michael Grammling - Refactored so that it can also work with Servlet 2.5
+ * @author Michael Grammling - Refactored so that it can also work with Servlet 2.5 containers
  */
 public class AsyncServletStreamServerImpl implements StreamServer<AsyncServletStreamServerConfigurationImpl> {
 
@@ -95,7 +99,10 @@ public class AsyncServletStreamServerImpl implements StreamServer<AsyncServletSt
     private int mCounter = 0;
 
     protected Servlet createServlet(final Router router) {
+        // (Opt.: Create only an HttpServlet if you want to use the official Servlet 3.0 API functionality).
         return new AsyncHttpServlet() {
+            // Override the method AsyncHttpServlet#service(HttpServletRequest, HttpServletResponse)
+            // if you want to use the official Servlet 3.0 API functionality. 
             @Override
             protected void service(AsyncHttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             	final long startTime = System.currentTimeMillis();
@@ -103,7 +110,8 @@ public class AsyncServletStreamServerImpl implements StreamServer<AsyncServletSt
             	log.info(String.format("HttpServlet.service(): id: %3d, request URI: %s", counter, req.getRequestURI()));
                 log.debug("Handling Servlet request asynchronously: " + req);
 
-                AsyncContext async = req.startAsync2();
+                // Use the method HttpServletRequest#startAsync() to use the official Servlet 3.0 API functionality.
+                AsyncContext async = req.startAsynchronous();
                 async.setTimeout(getConfiguration().getAsyncTimeoutSeconds() * 1000);
 
                 async.addListener(new AsyncListener() {

@@ -11,6 +11,15 @@ import org.jupnp.servlet.AsyncEvent;
 import org.jupnp.servlet.AsyncListener;
 
 
+/**
+ * The {@link AsyncContextImpl} is a concrete implementation of the {@link AsyncContext}.
+ * <p>
+ * This class simulates the asynchronous processing feature of Servlet 3.0 containers.
+ * <p>
+ * This class can be removed if Servlet 2.5 support should be given up again.
+ * 
+ * @author Michael Grammling
+ */
 public class AsyncContextImpl implements AsyncContext {
 
     private static final long DEFAULT_TIMEOUT = 60000;
