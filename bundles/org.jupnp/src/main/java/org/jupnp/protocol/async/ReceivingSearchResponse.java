@@ -98,10 +98,10 @@ public class ReceivingSearchResponse extends ReceivingAsync<IncomingSearchRespon
                 configuration.getAsyncProtocolExecutor().execute(
                         new RetrieveRemoteDescriptors(getUpnpService(), rd));
             } else {
-                log.warning("The configuration for the async protocol executor is null.");
+                log.finer("The configuration for the async protocol executor is null.");
             }
         } else {
-            log.warning("The UPnP service is null.");
+            log.finer("The UPnP service is null.");
         }
     }
 
