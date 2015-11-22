@@ -2,10 +2,9 @@
 <?compositeArtifactRepository version='1.0.0'?>
 <repository name='jUPnP Repository' type='org.eclipse.equinox.internal.p2.artifact.repository.CompositeArtifactRepository' version='1.0.0'>
   <properties size='1'>
-    <property name='p2.timestamp' value='1447572326338'/>
+    <property name='p2.timestamp' value='1447572326339'/>
   </properties>
-  <children size='2'>
-    <child location='unsorted/'/>
+  <children size='1'>
     <child location='2.0.0/'/>
   </children>
 </repository>
