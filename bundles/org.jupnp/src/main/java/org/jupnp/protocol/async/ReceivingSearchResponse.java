@@ -38,10 +38,11 @@ import org.slf4j.LoggerFactory;
  * </p>
  *
  * @author Christian Bauer
+ * @author Jochen Hiller - changed logger to be static
  */
 public class ReceivingSearchResponse extends ReceivingAsync<IncomingSearchResponse> {
 
-    final private Logger log = LoggerFactory.getLogger(ReceivingSearchResponse.class);
+    private static final Logger log = LoggerFactory.getLogger(ReceivingSearchResponse.class);
 
     public ReceivingSearchResponse(UpnpService upnpService, IncomingDatagramMessage<UpnpResponse> inputMessage) {
         super(upnpService, new IncomingSearchResponse(inputMessage));

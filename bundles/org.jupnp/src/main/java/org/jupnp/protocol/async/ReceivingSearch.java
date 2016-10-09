@@ -61,10 +61,11 @@ import org.slf4j.LoggerFactory;
  * </p>
  *
  * @author Christian Bauer
+ * @author Jochen Hiller - changed logger to be static
  */
 public class ReceivingSearch extends ReceivingAsync<IncomingSearchRequest> {
 
-    final private Logger log = LoggerFactory.getLogger(ReceivingSearch.class);
+    private static final Logger log = LoggerFactory.getLogger(ReceivingSearch.class);
 
     private final boolean LOG_ENABLED = log.isTraceEnabled();
 

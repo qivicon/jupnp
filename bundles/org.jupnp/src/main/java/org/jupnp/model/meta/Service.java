@@ -32,10 +32,11 @@ import org.slf4j.LoggerFactory;
  * The metadata of a service, with actions and state variables.
  *
  * @author Christian Bauer
+ * @author Jochen Hiller - changed logger to be static
  */
 public abstract class Service<D extends Device, S extends Service> {
 
-    final private Logger log = LoggerFactory.getLogger(Service.class);
+    private static final Logger log = LoggerFactory.getLogger(Service.class);
 
     final private ServiceType serviceType;
     final private ServiceId serviceId;

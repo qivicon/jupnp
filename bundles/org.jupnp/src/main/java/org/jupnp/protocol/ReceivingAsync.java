@@ -33,10 +33,11 @@ import org.slf4j.LoggerFactory;
  * @param <M> The type of UPnP message handled by this protocol.
  *
  * @author Christian Bauer
+ * @author Jochen Hiller - changed logger to be static
  */
 public abstract class ReceivingAsync<M extends UpnpMessage> implements Runnable {
 
-    final private Logger log = LoggerFactory.getLogger(UpnpService.class);
+    private static final Logger log = LoggerFactory.getLogger(UpnpService.class);
 
     private final UpnpService upnpService;
 

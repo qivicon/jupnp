@@ -26,11 +26,13 @@ import org.jupnp.model.meta.LocalDevice;
 import org.jupnp.model.meta.RemoteDevice;
 import org.jupnp.registry.Registry;
 import org.jupnp.registry.RegistryListener;
+import org.jupnp.util.SpecificationViolationReporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * @author Jochen Hiller - Initial contribution
+ * @author Jochen Hiller - set verbose level of SpecificationViolationReporter
  */
 public class SearchCommand {
 
@@ -44,6 +46,12 @@ public class SearchCommand {
 	public int run(int timeout, String sortBy, String filter, boolean verbose) {
 		// This will create necessary network resources for UPnP right away
 		logger.debug("Starting jUPnP search...");
+		if (verbose) {
+			SpecificationViolationReporter.enableReporting();
+		} else {
+			logger.debug("Disable UPnP specification violation reportings");
+			SpecificationViolationReporter.disableReporting();
+		}
 		UpnpService upnpService = tool.createUpnpService();
 		upnpService.startup();
 

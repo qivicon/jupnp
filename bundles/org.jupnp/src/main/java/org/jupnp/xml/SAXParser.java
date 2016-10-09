@@ -39,6 +39,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
  * @author Christian Bauer
+ * @author Jochen Hiller - changed logger to be static
  */
 public class SAXParser {
 
@@ -130,10 +131,9 @@ public class SAXParser {
     }
 
 
+    private static final Logger log = LoggerFactory.getLogger(SAXParser.class);
+
     public static class Handler<I> extends DefaultHandler {
-
-        final private Logger log = LoggerFactory.getLogger(SAXParser.class);
-
         protected SAXParser parser;
         protected I instance;
         protected Handler parent;

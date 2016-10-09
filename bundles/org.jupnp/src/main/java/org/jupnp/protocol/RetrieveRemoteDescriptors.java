@@ -62,10 +62,11 @@ import org.slf4j.LoggerFactory;
  *
  * @author Christian Bauer
  * @author Kai Kreuzer - fixed service and embedded device processing
+ * @author Jochen Hiller - changed logger to be static
  */
 public class RetrieveRemoteDescriptors implements Runnable {
 
-    final private Logger log = LoggerFactory.getLogger(RetrieveRemoteDescriptors.class);
+    private static final Logger log = LoggerFactory.getLogger(RetrieveRemoteDescriptors.class);
 
     private final UpnpService upnpService;
     private RemoteDevice rd;

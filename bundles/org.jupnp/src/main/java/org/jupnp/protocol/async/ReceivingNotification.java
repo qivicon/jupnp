@@ -67,10 +67,11 @@ import org.slf4j.LoggerFactory;
  * </p>
  *
  * @author Christian Bauer
+ * @author Jochen Hiller - changed logger to be static
  */
 public class ReceivingNotification extends ReceivingAsync<IncomingNotificationRequest> {
 
-    final private Logger log = LoggerFactory.getLogger(ReceivingNotification.class);
+    private static final Logger log = LoggerFactory.getLogger(ReceivingNotification.class);
 
     public ReceivingNotification(UpnpService upnpService, IncomingDatagramMessage<UpnpRequest> inputMessage) {
         super(upnpService, new IncomingNotificationRequest(inputMessage));

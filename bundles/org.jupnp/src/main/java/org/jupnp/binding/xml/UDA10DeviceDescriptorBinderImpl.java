@@ -48,6 +48,7 @@ import org.jupnp.model.types.ServiceType;
 import org.jupnp.model.types.UDN;
 import org.jupnp.util.Exceptions;
 import org.jupnp.util.MimeType;
+import org.jupnp.util.SpecificationViolationReporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -63,10 +64,11 @@ import org.xml.sax.SAXParseException;
  * Implementation based on JAXP DOM.
  *
  * @author Christian Bauer
+ * @author Jochen Hiller - changed logger to be static, use SpecifictionViolationReporter
  */
 public class UDA10DeviceDescriptorBinderImpl implements DeviceDescriptorBinder, ErrorHandler {
 
-    private Logger log = LoggerFactory.getLogger(DeviceDescriptorBinder.class);
+    private static final Logger log = LoggerFactory.getLogger(DeviceDescriptorBinder.class);
 
     public <D extends Device> D describe(D undescribedDevice, String descriptorXml) throws DescriptorBindingException, ValidationException {
 
@@ -131,7 +133,8 @@ public class UDA10DeviceDescriptorBinderImpl implements DeviceDescriptorBinder, 
     protected void hydrateRoot(MutableDevice descriptor, Element rootElement) throws DescriptorBindingException {
 
         if (rootElement.getNamespaceURI() == null || !rootElement.getNamespaceURI().equals(Descriptor.Device.NAMESPACE_URI)) {
-            log.warn("Wrong XML namespace declared on root element: " + rootElement.getNamespaceURI());
+			SpecificationViolationReporter.violate(
+					"Wrong XML namespace declared on root element: " + rootElement.getNamespaceURI());
         }
 
         if (!rootElement.getNodeName().equals(ELEMENT.root.name())) {
@@ -188,14 +191,16 @@ public class UDA10DeviceDescriptorBinderImpl implements DeviceDescriptorBinder, 
             if (ELEMENT.major.equals(specVersionChild)) {
                 String version = XMLUtil.getTextContent(specVersionChild).trim();
                 if (!version.equals("1")) {
-                    log.warn("Unsupported UDA major version, ignoring: " + version);
+					SpecificationViolationReporter
+							.violate("Unsupported UDA major version, ignoring: " + version);
                     version = "1";
                 }
                 descriptor.udaVersion.major = Integer.valueOf(version);
             } else if (ELEMENT.minor.equals(specVersionChild)) {
                 String version = XMLUtil.getTextContent(specVersionChild).trim();
                 if (!version.equals("0")) {
-                    log.warn("Unsupported UDA minor version, ignoring: " + version);
+					SpecificationViolationReporter
+							.violate("Unsupported UDA minor version, ignoring: " + version);
                     version = "0";
                 }
                 descriptor.udaVersion.minor = Integer.valueOf(version);
@@ -289,7 +294,8 @@ public class UDA10DeviceDescriptorBinderImpl implements DeviceDescriptorBinder, 
                         try {
                             icon.depth = (Integer.valueOf(depth));
                        	} catch(NumberFormatException ex) {
-                       		log.warn("Invalid icon depth '" + depth + "', using 16 as default: " + ex);
+							SpecificationViolationReporter.violate(
+									"Invalid icon depth '" + depth + "', using 16 as default: " + ex);
                        		icon.depth = 16;
                        	}
                     } else if (ELEMENT.url.equals(iconChild)) {
@@ -299,7 +305,8 @@ public class UDA10DeviceDescriptorBinderImpl implements DeviceDescriptorBinder, 
                             icon.mimeType = XMLUtil.getTextContent(iconChild);
                             MimeType.valueOf(icon.mimeType);
                         } catch(IllegalArgumentException ex) {
-                            log.warn("Ignoring invalid icon mime type: " + icon.mimeType);
+							SpecificationViolationReporter
+									.violate("Ignoring invalid icon mime type: " + icon.mimeType);
                             icon.mimeType = "";
                         }
                     }
@@ -349,8 +356,8 @@ public class UDA10DeviceDescriptorBinderImpl implements DeviceDescriptorBinder, 
 
                     descriptor.services.add(service);
                 } catch (InvalidValueException ex) {
-                    log.warn(
-                        "UPnP specification violation, skipping invalid service declaration. " + ex.getMessage()
+					SpecificationViolationReporter
+							.violate("Skipping invalid service declaration. " + ex.getMessage()
                     );
                 }
             }
@@ -575,8 +582,6 @@ public class UDA10DeviceDescriptorBinderImpl implements DeviceDescriptorBinder, 
     }
 
     static protected URI parseURI(String uri) {
-    	Logger log = LoggerFactory.getLogger(DeviceDescriptorBinder.class);
-    	
         // TODO: UPNP VIOLATION: Netgear DG834 uses a non-URI: 'www.netgear.com'
         if (uri.startsWith("www.")) {
              uri = "http://" + uri;
@@ -618,7 +623,8 @@ public class UDA10DeviceDescriptorBinderImpl implements DeviceDescriptorBinder, 
             //
             return URI.create("./" + uri);
         } catch (IllegalArgumentException ex) {
-            log.warn("Illegal URI '" + uri + "', ignoring value: " + Exceptions.unwrap(ex));
+			SpecificationViolationReporter.violate(
+					"Illegal URI '" + uri + "', ignoring value: " + Exceptions.unwrap(ex));
             // Ignore
         }
         return null;
