@@ -26,7 +26,7 @@ import org.jupnp.util.SpecificationViolationReporter;
  * Describes an action and its input/output arguments.
  *
  * @author Christian Bauer
- * @author Jochen Hiller - use SpecifictionViolationReporter
+ * @author Jochen Hiller - use SpecificationViolationReporter
  */
 public class Action<S extends Service> implements Validatable {
 

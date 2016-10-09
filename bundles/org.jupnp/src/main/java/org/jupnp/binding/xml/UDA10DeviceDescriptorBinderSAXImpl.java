@@ -46,7 +46,7 @@ import org.xml.sax.SAXException;
  * A JAXP SAX parser implementation, which is actually slower than the DOM implementation (on desktop and on Android)!
  *
  * @author Christian Bauer
- * @author Jochen Hiller - changed logger to be static, use SpecifictionViolationReporter
+ * @author Jochen Hiller - changed logger to be static, use SpecificationViolationReporter
  */
 public class UDA10DeviceDescriptorBinderSAXImpl extends UDA10DeviceDescriptorBinderImpl {
 

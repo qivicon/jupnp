@@ -31,7 +31,7 @@ import org.xml.sax.SAXParseException;
  * @author Michael Pujos
  * @author Kai Kreuzer - added faulty descriptors as found by Belkin WeMo
  * @author Roland Edelhoff - avoid description of Sonos group devices
- * @author Jochen Hiller - changed logger to be static, use SpecifictionViolationReporter
+ * @author Jochen Hiller - changed logger to be static, use SpecificationViolationReporter
  */
 public class RecoveringUDA10DeviceDescriptorBinderImpl extends UDA10DeviceDescriptorBinderImpl {
 

@@ -64,7 +64,7 @@ import org.xml.sax.SAXParseException;
  * Implementation based on JAXP DOM.
  *
  * @author Christian Bauer
- * @author Jochen Hiller - changed logger to be static, use SpecifictionViolationReporter
+ * @author Jochen Hiller - changed logger to be static, use SpecificationViolationReporter
  */
 public class UDA10DeviceDescriptorBinderImpl implements DeviceDescriptorBinder, ErrorHandler {
 

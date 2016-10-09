@@ -45,7 +45,7 @@ import static org.jupnp.binding.xml.Descriptor.Service.ELEMENT;
  * Implementation based on JAXP SAX.
  *
  * @author Christian Bauer
- * @author Jochen Hiller - changed logger to be static, use SpecifictionViolationReporter
+ * @author Jochen Hiller - changed logger to be static, use SpecificationViolationReporter
  */
 public class UDA10ServiceDescriptorBinderSAXImpl extends UDA10ServiceDescriptorBinderImpl {
 

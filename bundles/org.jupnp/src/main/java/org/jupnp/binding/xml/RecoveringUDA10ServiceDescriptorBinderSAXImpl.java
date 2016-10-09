@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
  * or ignores services that are not correctly declared.
  *
  * @author Hans-Jörg Merk - added faulty descriptors as found by Belkin WeMo
- * @author Jochen Hiller - changed logger to be static, use SpecifictionViolationReporter
+ * @author Jochen Hiller - changed logger to be static, use SpecificationViolationReporter
  */
 public class RecoveringUDA10ServiceDescriptorBinderSAXImpl extends UDA10ServiceDescriptorBinderSAXImpl {
 

@@ -30,7 +30,7 @@ import org.jupnp.util.SpecificationViolationReporter;
  * </p>
  *
  * @author Christian Bauer
- * @author Jochen Hiller - use SpecifictionViolationReporter
+ * @author Jochen Hiller - use SpecificationViolationReporter
  */
 public class ActionArgument<S extends Service> implements Validatable {
 

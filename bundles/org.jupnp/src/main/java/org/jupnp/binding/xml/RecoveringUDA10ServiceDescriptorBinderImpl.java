@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
  * This binder does not enforce strict UPnP spec conformance - it rather ignores services that are not correctly declared.
  *
  * @author Kai Kreuzer
- * @author Jochen Hiller - changed logger to be static, use SpecifictionViolationReporter
+ * @author Jochen Hiller - changed logger to be static, use SpecificationViolationReporter
  */
 public class RecoveringUDA10ServiceDescriptorBinderImpl extends UDA10ServiceDescriptorBinderImpl {
 
