@@ -59,11 +59,11 @@ import org.xml.sax.SAXParseException;
  * Implementation based on JAXP DOM.
  *
  * @author Christian Bauer
- * @author Jochen Hiller - changed logger to be static, use SpecificationViolationReporter
+ * @author Jochen Hiller - use SpecificationViolationReporter, make logger final
  */
 public class UDA10ServiceDescriptorBinderImpl implements ServiceDescriptorBinder, ErrorHandler {
 
-    private static final Logger log = LoggerFactory.getLogger(ServiceDescriptorBinder.class);
+    private final Logger log = LoggerFactory.getLogger(ServiceDescriptorBinder.class);
 
     public <S extends Service> S describe(S undescribedService, String descriptorXml) throws DescriptorBindingException, ValidationException {
         if (descriptorXml == null || descriptorXml.length() == 0) {
@@ -249,8 +249,8 @@ public class UDA10ServiceDescriptorBinderImpl implements ServiceDescriptorBinder
                     actionArgument.direction = ActionArgument.Direction.valueOf(directionString.toUpperCase(Locale.ENGLISH));
                 } catch (IllegalArgumentException ex) {
                     // TODO: UPNP VIOLATION: Pelco SpectraIV-IP uses illegal value INOUT
-					SpecificationViolationReporter.violate(
-							"Invalid action argument direction, assuming 'IN': " + directionString);
+                    SpecificationViolationReporter.violate(
+                            "Invalid action argument direction, assuming 'IN': " + directionString);
                     actionArgument.direction = ActionArgument.Direction.IN;
                 }
             } else if (ELEMENT.relatedStateVariable.equals(argumentNodeChild)) {
@@ -430,8 +430,8 @@ public class UDA10ServiceDescriptorBinderImpl implements ServiceDescriptorBinder
         appendNewElementIfNotNull(descriptor, actionArgumentElement, ELEMENT.direction, actionArgument.getDirection().toString().toLowerCase(Locale.ENGLISH));
         if (actionArgument.isReturnValue()) {
             // TODO: UPNP VIOLATION: WMP12 will discard RenderingControl service if it contains <retval> tags
-			SpecificationViolationReporter.violate(
-					"Not producing <retval> element to be compatible with WMP12: " + actionArgument);
+            SpecificationViolationReporter.violate(
+                    "Not producing <retval> element to be compatible with WMP12: " + actionArgument);
             // appendNewElement(descriptor, actionArgumentElement, ELEMENT.retval);
         }
         appendNewElementIfNotNull(descriptor, actionArgumentElement, ELEMENT.relatedStateVariable, actionArgument.getRelatedStateVariableName());

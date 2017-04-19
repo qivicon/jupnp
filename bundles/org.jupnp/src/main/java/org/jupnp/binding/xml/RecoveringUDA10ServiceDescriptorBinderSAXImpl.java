@@ -29,11 +29,11 @@ import org.slf4j.LoggerFactory;
  * or ignores services that are not correctly declared.
  *
  * @author Hans-Jörg Merk - added faulty descriptors as found by Belkin WeMo
- * @author Jochen Hiller - changed logger to be static, use SpecificationViolationReporter
+ * @author Jochen Hiller - use SpecificationViolationReporter, make logger final
  */
 public class RecoveringUDA10ServiceDescriptorBinderSAXImpl extends UDA10ServiceDescriptorBinderSAXImpl {
 
-    private static final Logger log = LoggerFactory.getLogger(ServiceDescriptorBinder.class);
+    private final Logger log = LoggerFactory.getLogger(ServiceDescriptorBinder.class);
 
     @Override
     public <S extends Service> S describe(S undescribedService, String descriptorXml)
@@ -63,7 +63,7 @@ public class RecoveringUDA10ServiceDescriptorBinderSAXImpl extends UDA10ServiceD
             String newXml;
             Matcher junkMatcher = (Pattern.compile("^([\\W]+)<")).matcher(descriptorXml.trim());
             newXml = junkMatcher.replaceFirst("<");
-			SpecificationViolationReporter.violate("Detected UTF-8 BOM, replacing it");
+            SpecificationViolationReporter.violate("Detected UTF-8 BOM, replacing it");
             return newXml.replaceAll("\0", " ");
         }
         return descriptorXml;
@@ -73,8 +73,8 @@ public class RecoveringUDA10ServiceDescriptorBinderSAXImpl extends UDA10ServiceD
     protected String fixRetval(String descriptorXml) {
         if (descriptorXml.contains("<scpd xmlns=\"urn:Belkin:service-1-0\">")) {
             if (descriptorXml.contains("<retval")) {
-				SpecificationViolationReporter
-						.violate("Detected invalid service value 'retval', replacing it");
+                SpecificationViolationReporter
+                    .violate("Detected invalid service value 'retval', replacing it");
                 descriptorXml = descriptorXml.replaceAll("<retval/>", " ");
                 return descriptorXml.replaceAll("<retval />", " ");
             }
@@ -86,7 +86,7 @@ public class RecoveringUDA10ServiceDescriptorBinderSAXImpl extends UDA10ServiceD
     protected String fixQuotes(String descriptorXml) {
         if (descriptorXml.contains("<scpd xmlns=\"urn:Belkin:service-1-0\">")) {
             if (descriptorXml.contains("Key\"")) {
-				SpecificationViolationReporter.violate("Detected invalid quotes, replacing it");
+                SpecificationViolationReporter.violate("Detected invalid quotes, replacing it");
                 descriptorXml = descriptorXml.replaceAll("\"smartprivateKey\"", "smartprivateKey");
                 return descriptorXml.replaceAll("\"pluginprivateKey\"", "pluginprivateKey");
             }

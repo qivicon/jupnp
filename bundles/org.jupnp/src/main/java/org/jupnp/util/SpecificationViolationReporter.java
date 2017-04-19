@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
  * This class reports violations again UPnP specification. It allows to
  * enable/disable these reports. E.g. for embedded devices it makes sense to
  * disable these checks for performance improvement and to avoid flooding of
- * logs if you have UPnP devices in your network which does not comply to UPnP
+ * logs if you have UPnP devices in your network which do not comply to UPnP
  * specifications.
  * 
  * @author Jochen Hiller
@@ -52,14 +52,17 @@ public class SpecificationViolationReporter {
 
 	public static void violate(String msg) {
 		if (enabled) {
-			logger.warn("UPnP specification violation: " + msg);
+			logger.warn("UPnP specification violation: {}", msg);
 		}
 	}
 
 	public static void violate(Device<DeviceIdentity, Device, Service> device, String msg) {
 		if (enabled) {
-			logger.warn("UPnP specification violation"
-					+ (device != null ? " of device '" + device.toString() + "'" : "") + ": " + msg);
+			if (device == null) {
+				logger.warn("UPnP specification violation: {}", msg);
+			} else {
+				logger.warn("UPnP specification violation of device '{}': {}", device.toString(), msg);
+			}
 		}
 	}
 

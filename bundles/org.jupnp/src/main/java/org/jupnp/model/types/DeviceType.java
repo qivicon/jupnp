@@ -101,8 +101,8 @@ public class DeviceType {
             // urn:schemas-upnp-org:device::1
             matcher = Pattern.compile("urn:(" + Constants.REGEX_NAMESPACE + "):device::([0-9]+).*").matcher(s);
             if (matcher.matches() && matcher.groupCount() >= 2) {
-				SpecificationViolationReporter
-						.violate("No device type token, defaulting to " + UNKNOWN + ": " + s);
+                SpecificationViolationReporter
+                        .violate("No device type token, defaulting to " + UNKNOWN + ": " + s);
                 return new DeviceType(matcher.group(1), UNKNOWN, Integer.valueOf(matcher.group(2)));
             }
 
@@ -111,8 +111,8 @@ public class DeviceType {
             matcher = Pattern.compile("urn:(" + Constants.REGEX_NAMESPACE + "):device:(.+?):([0-9]+).*").matcher(s);
             if (matcher.matches() && matcher.groupCount() >= 3) {
                 String cleanToken = matcher.group(2).replaceAll("[^a-zA-Z_0-9\\-]", "-");
-				SpecificationViolationReporter.violate(
-						"Replacing invalid device type token '" + matcher.group(2) + "' with: " + cleanToken);
+                SpecificationViolationReporter.violate(
+                        "Replacing invalid device type token '" + matcher.group(2) + "' with: " + cleanToken);
                 return new DeviceType(matcher.group(1), cleanToken, Integer.valueOf(matcher.group(3)));
             }
         } catch (RuntimeException e) {

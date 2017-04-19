@@ -201,14 +201,14 @@ public class DeviceDetails implements Validatable {
         if (getUpc() != null) {
             // This is broken in more than half of the devices I've tested, so let's not even bother with a warning
             if (getUpc().length() != 12) {
-				SpecificationViolationReporter
-						.violate("UPC must be 12 digits: '" + getUpc() + "' for device '" + getFriendlyName() + "'");
+                SpecificationViolationReporter
+                        .violate("UPC must be 12 digits: '" + getUpc() + "' for device '" + getFriendlyName() + "'");
             } else {
                 try {
                     Long.parseLong(getUpc());
                 } catch (NumberFormatException ex) {
-					SpecificationViolationReporter.violate("UPC must be 12 digits all-numeric: '" + getUpc()
-							+ "' for device '" + getFriendlyName() + "'");
+                    SpecificationViolationReporter.violate("UPC must be 12 digits all-numeric: '" + getUpc()
+                        + "' for device '" + getFriendlyName() + "'");
                 }
             }
         }

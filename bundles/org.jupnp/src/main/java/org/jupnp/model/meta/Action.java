@@ -143,8 +143,8 @@ public class Action<S extends Service> implements Validatable {
                     "Action without name of: " + getService()
             ));
         } else if (!ModelUtil.isValidUDAName(getName())) {
-			SpecificationViolationReporter.violate(getService().getDevice(),
-					"Invalid action name: " + this);
+            SpecificationViolationReporter.violate(getService().getDevice(),
+                    "Invalid action name: " + this);
         }
 
         for (ActionArgument actionArgument : getArguments()) {

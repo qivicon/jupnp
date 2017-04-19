@@ -89,26 +89,26 @@ public class IO {
             destFile.createNewFile();
         }
 
-    	FileInputStream fis = null;
+        FileInputStream fis = null;
         FileChannel source = null;
-    	FileOutputStream fos = null;
+        FileOutputStream fos = null;
         FileChannel destination = null;
         try {
-        	fis = new FileInputStream(sourceFile);
+            fis = new FileInputStream(sourceFile);
             source = fis.getChannel();
             fos = new FileOutputStream(destFile);
             destination = fos.getChannel();
             destination.transferFrom(source, 0, source.size());
         } finally {
-        	if (fis != null) {
-        		fis.close();
-        	}
+            if (fis != null) {
+                fis.close();
+            }
             if (source != null) {
                 source.close();
             }
-        	if (fos != null) {
-        		fos.close();
-        	}
+            if (fos != null) {
+                fos.close();
+            }
             if (destination != null) {
                 destination.close();
             }

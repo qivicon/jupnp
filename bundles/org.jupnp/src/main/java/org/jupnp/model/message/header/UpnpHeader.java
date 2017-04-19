@@ -30,7 +30,6 @@ import org.slf4j.LoggerFactory;
  * </p>
  *
  * @author Christian Bauer
- * @author Jochen Hiller - changed logger to be static
  */
 public abstract class UpnpHeader<T> {
 
@@ -125,9 +124,6 @@ public abstract class UpnpHeader<T> {
         }
     }
 
-    // make this logger static, to avoid instantiation per parsing per header
-    private static final Logger log = LoggerFactory.getLogger(UpnpHeader.class);
-
     private T value;
 
     public void setValue(T value) {
@@ -163,6 +159,8 @@ public abstract class UpnpHeader<T> {
      * @return The best matching header subtype instance, or <code>null</code> if no subtype can be found.
      */
     public static UpnpHeader newInstance(UpnpHeader.Type type, String headerValue) {
+        final Logger log = LoggerFactory.getLogger(UpnpHeader.class);
+
         // Try all the UPnP headers and see if one matches our value parsers
         UpnpHeader upnpHeader = null;
         for (int i = 0; i < type.getHeaderTypes().length && upnpHeader == null; i++) {

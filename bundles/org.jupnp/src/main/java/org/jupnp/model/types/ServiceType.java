@@ -113,8 +113,8 @@ public class ServiceType {
             matcher = Pattern.compile("urn:(" + Constants.REGEX_NAMESPACE + "):service:(.+?):([0-9]+).*").matcher(s);
             if (matcher.matches() && matcher.groupCount() >= 3) {
                 String cleanToken = matcher.group(2).replaceAll("[^a-zA-Z_0-9\\-]", "-");
-				SpecificationViolationReporter.violate(
-						"Replacing invalid service type token '" + matcher.group(2) + "' with: " + cleanToken);
+                SpecificationViolationReporter.violate(
+                        "Replacing invalid service type token '" + matcher.group(2) + "' with: " + cleanToken);
                 return new ServiceType(matcher.group(1), cleanToken, Integer.valueOf(matcher.group(3)));
             }
 
@@ -123,8 +123,8 @@ public class ServiceType {
             matcher = Pattern.compile("urn:(" + Constants.REGEX_NAMESPACE + "):serviceId:(.+?):([0-9]+).*").matcher(s);
             if (matcher.matches() && matcher.groupCount() >= 3) {
                 String cleanToken = matcher.group(2).replaceAll("[^a-zA-Z_0-9\\-]", "-");
-				SpecificationViolationReporter.violate(
-						"Replacing invalid service type token '" + matcher.group(2) + "' with: " + cleanToken);
+                SpecificationViolationReporter.violate(
+                        "Replacing invalid service type token '" + matcher.group(2) + "' with: " + cleanToken);
                 return new ServiceType(matcher.group(1), cleanToken, Integer.valueOf(matcher.group(3)));
             }
         } catch (RuntimeException e) {

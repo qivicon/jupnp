@@ -31,11 +31,11 @@ import org.xml.sax.SAXParseException;
  * @author Michael Pujos
  * @author Kai Kreuzer - added faulty descriptors as found by Belkin WeMo
  * @author Roland Edelhoff - avoid description of Sonos group devices
- * @author Jochen Hiller - changed logger to be static, use SpecificationViolationReporter
+ * @author Jochen Hiller - use SpecificationViolationReporter, change logger to be final
  */
 public class RecoveringUDA10DeviceDescriptorBinderImpl extends UDA10DeviceDescriptorBinderImpl {
 
-    private static final Logger log = LoggerFactory.getLogger(RecoveringUDA10DeviceDescriptorBinderImpl.class);
+    private final Logger log = LoggerFactory.getLogger(RecoveringUDA10DeviceDescriptorBinderImpl.class);
 
     @Override
     public <D extends Device> D describe(D undescribedDevice, String descriptorXml)
@@ -58,7 +58,7 @@ public class RecoveringUDA10DeviceDescriptorBinderImpl extends UDA10DeviceDescri
                 // after pairing the player to Sonos and therefore it will be stored in the registry instead of the
                 // player.
                 if (isSonosGroupDevice(device)) {
-                	throw new IllegalArgumentException("Ignore Sonos group devices due to invalid descriptor content.");
+                    throw new IllegalArgumentException("Ignore Sonos group devices due to invalid descriptor content.");
                 }
                 return device;
                 
@@ -66,7 +66,7 @@ public class RecoveringUDA10DeviceDescriptorBinderImpl extends UDA10DeviceDescri
                 log.warn("Regular parsing failed: " + Exceptions.unwrap(ex).getMessage());
                 originalException = ex;
             } catch (IllegalArgumentException e) {
-            	handleInvalidDescriptor(descriptorXml, new DescriptorBindingException(e.getMessage()));
+                handleInvalidDescriptor(descriptorXml, new DescriptorBindingException(e.getMessage()));
             }
             
             String fixedXml;
@@ -160,12 +160,12 @@ public class RecoveringUDA10DeviceDescriptorBinderImpl extends UDA10DeviceDescri
     protected String fixGarbageTrailingChars(String descriptorXml, DescriptorBindingException ex) {
         int index = descriptorXml.indexOf("</root>");
         if (index == -1) {
-			SpecificationViolationReporter.violate("No closing </root> element in descriptor");
+            SpecificationViolationReporter.violate("No closing </root> element in descriptor");
             return null;
         }
         if (descriptorXml.length() != index + "</root>".length()) {
-			SpecificationViolationReporter
-					.violate("Detected garbage characters after <root> node, removing");
+            SpecificationViolationReporter
+                .violate("Detected garbage characters after <root> node, removing");
             return descriptorXml.substring(0, index) + "</root>";
         }
         return null;
@@ -173,8 +173,8 @@ public class RecoveringUDA10DeviceDescriptorBinderImpl extends UDA10DeviceDescri
 
     protected String fixMimeTypes(String descriptorXml) {
         if (descriptorXml.contains("<mimetype>jpg</mimetype>")) {
-			SpecificationViolationReporter
-					.violate("Detected invalid mimetype 'jpg', replacing it with 'image/jpeg'");
+            SpecificationViolationReporter
+                    .violate("Detected invalid mimetype 'jpg', replacing it with 'image/jpeg'");
             return descriptorXml.replaceAll("<mimetype>jpg</mimetype>", "<mimetype>image/jpeg</mimetype>");
         }
         return descriptorXml;
@@ -182,8 +182,8 @@ public class RecoveringUDA10DeviceDescriptorBinderImpl extends UDA10DeviceDescri
 
     protected String fixWrongNamespaces(String descriptorXml) {
         if (descriptorXml.contains("<root xmlns=\"urn:Belkin:device-1-0\">")) {
-			SpecificationViolationReporter.violate(
-					"Detected invalid root namespace 'urn:Belkin', replacing it with 'urn:schemas-upnp-org'");
+            SpecificationViolationReporter.violate(
+                    "Detected invalid root namespace 'urn:Belkin', replacing it with 'urn:schemas-upnp-org'");
             return descriptorXml.replaceAll("<root xmlns=\"urn:Belkin:device-1-0\">",
                     "<root xmlns=\"urn:schemas-upnp-org:device-1-0\">");
         }
@@ -250,8 +250,8 @@ public class RecoveringUDA10DeviceDescriptorBinderImpl extends UDA10DeviceDescri
     // Belkin WeMo Maker contains illegal strings in UDN values
     protected String fixWemoMakerUDN(String descriptorXml) {
         if (descriptorXml.contains(":sensor:switch")) {
-			SpecificationViolationReporter
-					.violate("Detected invalid UDN value ':sensor:switch', replacing it");
+            SpecificationViolationReporter
+                    .violate("Detected invalid UDN value ':sensor:switch', replacing it");
             descriptorXml = descriptorXml.replaceAll(":sensor:switch", "");
             return descriptorXml.replaceAll(":sensor:switch", "");
         }

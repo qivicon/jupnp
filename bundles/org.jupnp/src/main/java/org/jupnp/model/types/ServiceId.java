@@ -88,14 +88,14 @@ public class ServiceId {
         // urn:upnp-org:serviceId:
         matcher = Pattern.compile("urn:(" + Constants.REGEX_NAMESPACE + "):serviceId:").matcher(s);
         if (matcher.matches() && matcher.groupCount() >= 1) {
-        	SpecificationViolationReporter.violate("No service ID token, defaulting to " + UNKNOWN + ": " + s);
+            SpecificationViolationReporter.violate("No service ID token, defaulting to " + UNKNOWN + ": " + s);
             return new ServiceId(matcher.group(1), UNKNOWN);
         }
 
         // TODO: UPNP VIOLATION: PS Audio Bridge has invalid service IDs
         String tokens[] = s.split("[:]");
         if (tokens.length == 4) {
-        	SpecificationViolationReporter.violate("Trying a simple colon-split of: " + s);
+            SpecificationViolationReporter.violate("Trying a simple colon-split of: " + s);
             return new ServiceId(tokens[1], tokens[3]);
         }
 

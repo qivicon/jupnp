@@ -39,11 +39,11 @@ import org.slf4j.LoggerFactory;
  * Describes either a root or embedded device.
  *
  * @author Christian Bauer
- * @author Jochen Hiller - changed logger to be static, use SpecificationViolationReporter
+ * @author Jochen Hiller - use SpecificationViolationReporter
  */
 public abstract class Device<DI extends DeviceIdentity, D extends Device, S extends Service> implements Validatable {
 
-    private static final Logger log = LoggerFactory.getLogger(Device.class);
+    private final Logger log = LoggerFactory.getLogger(Device.class);
 
     final private DI identity;
 
@@ -91,8 +91,8 @@ public abstract class Device<DI extends DeviceIdentity, D extends Device, S exte
                     if(iconErrors.isEmpty()) {
                         validIcons.add(icon);
                     } else {
-						SpecificationViolationReporter
-								.violate("Discarding invalid '" + icon + "': " + iconErrors);
+                        SpecificationViolationReporter
+                                .violate("Discarding invalid '" + icon + "': " + iconErrors);
                     }
                 }
             }

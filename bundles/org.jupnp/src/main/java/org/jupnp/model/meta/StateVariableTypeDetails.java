@@ -29,7 +29,7 @@ import org.jupnp.util.SpecificationViolationReporter;
  * Type of a state variable, its default value, and integrity rules for allowed values and ranges.
  *
  * @author Christian Bauer
- * @author Jochen Hiller - changed logger to be static, use SpecificationViolationReporter
+ * @author Jochen Hiller - use SpecificationViolationReporter
  */
 public class StateVariableTypeDetails implements Validatable {
 
@@ -114,14 +114,14 @@ public class StateVariableTypeDetails implements Validatable {
 
             for (String s : getAllowedValues()) {
                 if (s.length() > 31) {
-					SpecificationViolationReporter
-							.violate("Allowed value string must be less than 32 chars: " + s);
+                    SpecificationViolationReporter
+                            .violate("Allowed value string must be less than 32 chars: " + s);
                 }
             }
 
             if(!foundDefaultInAllowedValues(defaultValue, allowedValues)) {
-				SpecificationViolationReporter.violate(
-						"Allowed string values " + "don't contain default value: " + defaultValue);
+                SpecificationViolationReporter.violate(
+                        "Allowed string values " + "don't contain default value: " + defaultValue);
             }
         }
 

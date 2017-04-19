@@ -43,61 +43,61 @@ public class SearchCommand {
 		this.tool = tool;
 	}
 
-	public int run(int timeout, String sortBy, String filter, boolean verbose) {
-		// This will create necessary network resources for UPnP right away
-		logger.debug("Starting jUPnP search...");
-		if (verbose) {
-			SpecificationViolationReporter.enableReporting();
-		} else {
-			logger.debug("Disable UPnP specification violation reportings");
-			SpecificationViolationReporter.disableReporting();
-		}
-		UpnpService upnpService = tool.createUpnpService();
-		upnpService.startup();
+    public int run(int timeout, String sortBy, String filter, boolean verbose) {
+        // This will create necessary network resources for UPnP right away
+        logger.debug("Starting jUPnP search...");
+        if (verbose) {
+            SpecificationViolationReporter.enableReporting();
+        } else {
+            logger.debug("Disable UPnP specification violation reportings");
+            SpecificationViolationReporter.disableReporting();
+        }
+        UpnpService upnpService = tool.createUpnpService();
+        upnpService.startup();
 
-		SearchResultPrinter printer = new SearchResultPrinter(sortBy, verbose);
-		if (!hasToSort(sortBy)) {
-			upnpService.getRegistry()
-					.addListener(
-							new SearchRegistryListener(printer, sortBy, filter,
-									verbose));
-		}
-		printer.printHeader();
+        SearchResultPrinter printer = new SearchResultPrinter(sortBy, verbose);
+        if (!hasToSort(sortBy)) {
+            upnpService.getRegistry()
+                    .addListener(
+                            new SearchRegistryListener(printer, sortBy, filter,
+                                    verbose));
+        }
+        printer.printHeader();
 
-		// Send a search message to all devices and services, they should
-		// respond soon
-		logger.debug("Sending SEARCH message to all devices...");
-		upnpService.getControlPoint().search(new STAllHeader());
+        // Send a search message to all devices and services, they should
+        // respond soon
+        logger.debug("Sending SEARCH message to all devices...");
+        upnpService.getControlPoint().search(new STAllHeader());
 
-		// Let's wait "timeout" for them to respond
-		logger.debug("Waiting " + timeout + " seconds before shutting down...");
-		try {
-			Thread.sleep(timeout * 1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+        // Let's wait "timeout" for them to respond
+        logger.debug("Waiting " + timeout + " seconds before shutting down...");
+        try {
+            Thread.sleep(timeout * 1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
-		logger.debug("Processing results...");
-		Registry registry = upnpService.getRegistry();
+        logger.debug("Processing results...");
+        Registry registry = upnpService.getRegistry();
 
-		for (Iterator<RemoteDevice> iter = registry.getRemoteDevices()
-				.iterator(); iter.hasNext();) {
-			RemoteDevice device = iter.next();
-			handleRemoteDevice(device, printer, sortBy, filter, verbose);
-		}
+        for (Iterator<RemoteDevice> iter = registry.getRemoteDevices()
+                .iterator(); iter.hasNext();) {
+            RemoteDevice device = iter.next();
+            handleRemoteDevice(device, printer, sortBy, filter, verbose);
+        }
 
-		printer.printBody();
+        printer.printBody();
 
-		// Release all resources and advertise BYEBYE to other UPnP devices
-		logger.debug("Stopping jUPnP...");
-		try {
-			upnpService.shutdown();
-		} catch (Exception ex) {
-			logger.error("Error during shutdown", ex);
-		}
+        // Release all resources and advertise BYEBYE to other UPnP devices
+        logger.debug("Stopping jUPnP...");
+        try {
+            upnpService.shutdown();
+        } catch (Exception ex) {
+            logger.error("Error during shutdown", ex);
+        }
 
-		return JUPnPTool.RC_OK;
-	}
+        return JUPnPTool.RC_OK;
+    }
 
 	private void handleRemoteDevice(RemoteDevice device,
 			SearchResultPrinter searchResult, String sortBy, String filter,

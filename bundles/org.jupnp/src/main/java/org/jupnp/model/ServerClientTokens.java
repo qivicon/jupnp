@@ -35,7 +35,7 @@ public class ServerClientTokens {
     // we get these properties static, as they will not change when JVM has been started
     // on JVM with enabled security System.getProperty needs to be checked by SecurityManager
     // and this class is used more often. Identified with Java FlightRecorder
-    private static String DEFAULT_OS_NAME =  System.getProperty("os.name").replaceAll("[^a-zA-Z0-9\\.\\-_]", "");
+    private static String DEFAULT_OS_NAME = System.getProperty("os.name").replaceAll("[^a-zA-Z0-9\\.\\-_]", "");
     private static String DEFAULT_OS_VERSION = System.getProperty("os.version").replaceAll("[^a-zA-Z0-9\\.\\-_]", "");
     
     private String osName = DEFAULT_OS_NAME;
@@ -52,8 +52,8 @@ public class ServerClientTokens {
     }
 
     public ServerClientTokens(String productName, String productVersion) {
-    	this.productName = productName;
-    	this.productVersion = productVersion;
+        this.productName = productName;
+        this.productVersion = productVersion;
     }
 
     public ServerClientTokens(int majorVersion, int minorVersion, String osName, String osVersion, String productName, String productVersion) {

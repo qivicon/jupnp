@@ -45,11 +45,11 @@ import static org.jupnp.binding.xml.Descriptor.Service.ELEMENT;
  * Implementation based on JAXP SAX.
  *
  * @author Christian Bauer
- * @author Jochen Hiller - changed logger to be static, use SpecificationViolationReporter
+ * @author Jochen Hiller - use SpecificationViolationReporterm, make logger final
  */
 public class UDA10ServiceDescriptorBinderSAXImpl extends UDA10ServiceDescriptorBinderImpl {
 
-    private static final Logger log = LoggerFactory.getLogger(ServiceDescriptorBinder.class);
+    private final Logger log = LoggerFactory.getLogger(ServiceDescriptorBinder.class);
 
     @Override
     public <S extends Service> S describe(S undescribedService, String descriptorXml) throws DescriptorBindingException, ValidationException {
@@ -244,8 +244,8 @@ public class UDA10ServiceDescriptorBinderSAXImpl extends UDA10ServiceDescriptorB
                         getInstance().direction = ActionArgument.Direction.valueOf(directionString.toUpperCase(Locale.ENGLISH));
                     } catch (IllegalArgumentException ex) {
                         // TODO: UPNP VIOLATION: Pelco SpectraIV-IP uses illegal value INOUT
-						SpecificationViolationReporter.violate(
-								"Invalid action argument direction, assuming 'IN': " + directionString);
+                        SpecificationViolationReporter.violate(
+                                "Invalid action argument direction, assuming 'IN': " + directionString);
                         getInstance().direction = ActionArgument.Direction.IN;
                     }
                     break;
