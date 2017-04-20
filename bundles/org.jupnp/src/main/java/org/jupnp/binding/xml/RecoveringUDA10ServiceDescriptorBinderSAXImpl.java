@@ -63,7 +63,7 @@ public class RecoveringUDA10ServiceDescriptorBinderSAXImpl extends UDA10ServiceD
             String newXml;
             Matcher junkMatcher = (Pattern.compile("^([\\W]+)<")).matcher(descriptorXml.trim());
             newXml = junkMatcher.replaceFirst("<");
-            SpecificationViolationReporter.report("Detected UTF-8 BOM, replacing it", null);
+            SpecificationViolationReporter.report("Detected UTF-8 BOM, replacing it");
             return newXml.replaceAll("\0", " ");
         }
         return descriptorXml;
@@ -86,7 +86,7 @@ public class RecoveringUDA10ServiceDescriptorBinderSAXImpl extends UDA10ServiceD
     protected String fixQuotes(String descriptorXml) {
         if (descriptorXml.contains("<scpd xmlns=\"urn:Belkin:service-1-0\">")) {
             if (descriptorXml.contains("Key\"")) {
-                SpecificationViolationReporter.report("Detected invalid quotes, replacing it", null);
+                SpecificationViolationReporter.report("Detected invalid quotes, replacing it");
                 descriptorXml = descriptorXml.replaceAll("\"smartprivateKey\"", "smartprivateKey");
                 return descriptorXml.replaceAll("\"pluginprivateKey\"", "pluginprivateKey");
             }

@@ -245,7 +245,7 @@ public class UDA10ServiceDescriptorBinderSAXImpl extends UDA10ServiceDescriptorB
                     } catch (IllegalArgumentException ex) {
                         // TODO: UPNP VIOLATION: Pelco SpectraIV-IP uses illegal value INOUT
                         SpecificationViolationReporter.report(
-                                "Invalid action argument direction, assuming 'IN': " + directionString, null);
+                                "Invalid action argument direction, assuming 'IN': {}", directionString);
                         getInstance().direction = ActionArgument.Direction.IN;
                     }
                     break;

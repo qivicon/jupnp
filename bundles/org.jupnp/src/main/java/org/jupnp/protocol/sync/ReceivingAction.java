@@ -64,13 +64,13 @@ public class ReceivingAction extends ReceivingSync<StreamRequestMessage, StreamR
         // device must return an HTTP status code "415 Unsupported Media Type".'
         if (contentTypeHeader != null && !contentTypeHeader.isUDACompliantXML()) {
             SpecificationViolationReporter.report(
-                    "Received invalid Content-Type '" + contentTypeHeader + "': " + getInputMessage(), null);
+                    "Received invalid Content-Type '{}': {}", contentTypeHeader, getInputMessage());
             return new StreamResponseMessage(new UpnpResponse(UpnpResponse.Status.UNSUPPORTED_MEDIA_TYPE));
         }
 
         if (contentTypeHeader == null) {
             SpecificationViolationReporter
-                    .report("Received without Content-Type: " + getInputMessage(), null);
+                    .report("Received without Content-Type: {}", getInputMessage());
         }
 
         ServiceControlResource resource =

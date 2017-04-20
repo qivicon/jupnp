@@ -238,7 +238,7 @@ public class UDA10DeviceDescriptorBinderSAXImpl extends UDA10DeviceDescriptorBin
                         getInstance().dlnaDocs.add(DLNADoc.valueOf(txt));
                     } catch (InvalidValueException ex) {
                         SpecificationViolationReporter.report(
-                                "Invalid X_DLNADOC value, ignoring value: " + txt, null);
+                                "Invalid X_DLNADOC value, ignoring value: {}", txt);
                     }
                     break;
                 case X_DLNACAP:
@@ -298,7 +298,7 @@ public class UDA10DeviceDescriptorBinderSAXImpl extends UDA10DeviceDescriptorBin
                         getInstance().depth = Integer.valueOf(getCharacters());
                     } catch(NumberFormatException ex) {
                         SpecificationViolationReporter.report(
-                                "Invalid icon depth '" + getCharacters() + "', using 16 as default: " + ex, null);
+                                "Invalid icon depth '{}', using 16 as default: {}", getCharacters(), ex);
                         getInstance().depth = 16;
                     }
                     break;
@@ -311,7 +311,7 @@ public class UDA10DeviceDescriptorBinderSAXImpl extends UDA10DeviceDescriptorBin
                         MimeType.valueOf(getInstance().mimeType);
                     } catch(IllegalArgumentException ex) {
                         SpecificationViolationReporter
-                                .report("Ignoring invalid icon mime type: " + getInstance().mimeType, null);
+                                .report("Ignoring invalid icon mime type: {}", getInstance().mimeType);
                         getInstance().mimeType = "";
                     }
                     break;

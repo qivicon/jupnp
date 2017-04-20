@@ -144,7 +144,7 @@ public class Action<S extends Service> implements Validatable {
             ));
         } else if (!ModelUtil.isValidUDAName(getName())) {
             SpecificationViolationReporter.report(getService().getDevice(),
-                    "Invalid action name: " + this, null);
+                    "Invalid action name: {}", this);
         }
 
         for (ActionArgument actionArgument : getArguments()) {
@@ -167,11 +167,11 @@ public class Action<S extends Service> implements Validatable {
             if (actionArgument.isReturnValue()) {
                 if (actionArgument.getDirection() == ActionArgument.Direction.IN) {
 					SpecificationViolationReporter.report(getService().getDevice(),
-							"Input argument can not have <retval/>", null);
+							"Input argument can not have <retval/>");
                 } else {
                     if (retValueArgument != null) {
 						SpecificationViolationReporter.report(getService().getDevice(),
-								"Only one argument of action '" + getName() + "' can be <retval/>", null);
+								"Only one argument of action '{}' can be <retval/>", getName());
                     }
                     retValueArgument = actionArgument;
                     retValueArgumentIndex = i;
@@ -184,8 +184,8 @@ public class Action<S extends Service> implements Validatable {
                 ActionArgument a = getArguments()[j];
                 if (a.getDirection() == ActionArgument.Direction.OUT) {
 					SpecificationViolationReporter.report(getService().getDevice(),
-							"Argument '" + retValueArgument.getName() + "' of action '" + getName()
-									+ "' is <retval/> but not the first OUT argument", null);
+							"Argument '{}' of action '{}' is <retval/> but not the first OUT argument",
+							retValueArgument.getName(), getName());
                 }
             }
         }

@@ -112,7 +112,7 @@ public class DeviceType {
             if (matcher.matches() && matcher.groupCount() >= 3) {
                 String cleanToken = matcher.group(2).replaceAll("[^a-zA-Z_0-9\\-]", "-");
                 SpecificationViolationReporter.report(
-                        "Replacing invalid device type token '" + matcher.group(2) + "' with: " + cleanToken, null);
+                        "Replacing invalid device type token '{}' with: {}", matcher.group(2), cleanToken);
                 return new DeviceType(matcher.group(1), cleanToken, Integer.valueOf(matcher.group(3)));
             }
         } catch (RuntimeException e) {

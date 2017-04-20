@@ -160,7 +160,7 @@ public class RecoveringUDA10DeviceDescriptorBinderImpl extends UDA10DeviceDescri
     protected String fixGarbageTrailingChars(String descriptorXml, DescriptorBindingException ex) {
         int index = descriptorXml.indexOf("</root>");
         if (index == -1) {
-            SpecificationViolationReporter.report("No closing </root> element in descriptor", null);
+            SpecificationViolationReporter.report("No closing </root> element in descriptor");
             return null;
         }
         if (descriptorXml.length() != index + "</root>".length()) {
@@ -183,7 +183,7 @@ public class RecoveringUDA10DeviceDescriptorBinderImpl extends UDA10DeviceDescri
     protected String fixWrongNamespaces(String descriptorXml) {
         if (descriptorXml.contains("<root xmlns=\"urn:Belkin:device-1-0\">")) {
             SpecificationViolationReporter.report(
-                    "Detected invalid root namespace 'urn:Belkin', replacing it with 'urn:schemas-upnp-org'", null);
+                    "Detected invalid root namespace 'urn:Belkin', replacing it with 'urn:schemas-upnp-org'");
             return descriptorXml.replaceAll("<root xmlns=\"urn:Belkin:device-1-0\">",
                     "<root xmlns=\"urn:schemas-upnp-org:device-1-0\">");
         }
@@ -215,7 +215,7 @@ public class RecoveringUDA10DeviceDescriptorBinderImpl extends UDA10DeviceDescri
         }
 
         String missingNS = matcher.group(1);
-        SpecificationViolationReporter.report("Fixing missing namespace declaration for: " + missingNS, null);
+        SpecificationViolationReporter.report("Fixing missing namespace declaration for: {}", missingNS);
 
         // Extract <root> attributes
         pattern = Pattern.compile("<root([^>]*)");

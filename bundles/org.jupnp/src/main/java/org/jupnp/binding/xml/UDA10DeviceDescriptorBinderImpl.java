@@ -134,7 +134,7 @@ public class UDA10DeviceDescriptorBinderImpl implements DeviceDescriptorBinder, 
 
         if (rootElement.getNamespaceURI() == null || !rootElement.getNamespaceURI().equals(Descriptor.Device.NAMESPACE_URI)) {
             SpecificationViolationReporter.report(
-                    "Wrong XML namespace declared on root element: " + rootElement.getNamespaceURI(), null);
+                    "Wrong XML namespace declared on root element: {}", rootElement.getNamespaceURI());
         }
 
         if (!rootElement.getNodeName().equals(ELEMENT.root.name())) {
@@ -295,7 +295,7 @@ public class UDA10DeviceDescriptorBinderImpl implements DeviceDescriptorBinder, 
                             icon.depth = (Integer.valueOf(depth));
                         } catch(NumberFormatException ex) {
                             SpecificationViolationReporter.report(
-                                    "Invalid icon depth '" + depth + "', using 16 as default: " + ex, null);
+                                    "Invalid icon depth '{}', using 16 as default: {}", depth, ex);
                             icon.depth = 16;
                         }
                     } else if (ELEMENT.url.equals(iconChild)) {
@@ -625,7 +625,7 @@ public class UDA10DeviceDescriptorBinderImpl implements DeviceDescriptorBinder, 
             return URI.create("./" + uri);
         } catch (IllegalArgumentException ex) {
             SpecificationViolationReporter.report(
-                    "Illegal URI '" + uri + "', ignoring value: " + Exceptions.unwrap(ex), null);
+                    "Illegal URI '{}', ignoring value: {}", uri, Exceptions.unwrap(ex));
             // Ignore
         }
         return null;

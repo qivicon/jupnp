@@ -250,7 +250,7 @@ public class UDA10ServiceDescriptorBinderImpl implements ServiceDescriptorBinder
                 } catch (IllegalArgumentException ex) {
                     // TODO: UPNP VIOLATION: Pelco SpectraIV-IP uses illegal value INOUT
                     SpecificationViolationReporter.report(
-                            "Invalid action argument direction, assuming 'IN': " + directionString, null);
+                            "Invalid action argument direction, assuming 'IN': {}", directionString);
                     actionArgument.direction = ActionArgument.Direction.IN;
                 }
             } else if (ELEMENT.relatedStateVariable.equals(argumentNodeChild)) {
@@ -431,7 +431,7 @@ public class UDA10ServiceDescriptorBinderImpl implements ServiceDescriptorBinder
         if (actionArgument.isReturnValue()) {
             // TODO: UPNP VIOLATION: WMP12 will discard RenderingControl service if it contains <retval> tags
             SpecificationViolationReporter.report(
-                    "Not producing <retval> element to be compatible with WMP12: " + actionArgument, null);
+                    "Not producing <retval> element to be compatible with WMP12: {}", actionArgument);
             // appendNewElement(descriptor, actionArgumentElement, ELEMENT.retval);
         }
         appendNewElementIfNotNull(descriptor, actionArgumentElement, ELEMENT.relatedStateVariable, actionArgument.getRelatedStateVariableName());

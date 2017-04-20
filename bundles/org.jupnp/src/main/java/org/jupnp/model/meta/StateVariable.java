@@ -82,7 +82,7 @@ public class StateVariable<S extends Service> implements Validatable {
             ));
         } else if (!ModelUtil.isValidUDAName(getName())) {
             SpecificationViolationReporter.report(getService().getDevice(),
-                    "Invalid state variable name: " + this, null);
+                    "Invalid state variable name: {}", this);
         }
 
         errors.addAll(getTypeDetails().validate());

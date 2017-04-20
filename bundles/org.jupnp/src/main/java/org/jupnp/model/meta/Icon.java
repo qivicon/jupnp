@@ -161,19 +161,19 @@ public class Icon implements Validatable {
 
         if (getMimeType() == null) {
             SpecificationViolationReporter.report(getDevice(),
-                    "Invalid icon, missing mime type: " + this, null);
+                    "Invalid icon, missing mime type: {}", this);
         }
         if (getWidth() == 0) {
             SpecificationViolationReporter.report(getDevice(),
-                    "Invalid icon, missing width: " + this, null);
+                    "Invalid icon, missing width: {}", this);
         }
         if (getHeight() == 0) {
             SpecificationViolationReporter.report(getDevice(),
-                   "Invalid icon, missing height: " + this, null);
+                   "Invalid icon, missing height: {}", this);
         }
         if (getDepth() == 0) {
             SpecificationViolationReporter.report(getDevice(),
-                   "Invalid icon, missing bitmap depth: " + this, null);
+                   "Invalid icon, missing bitmap depth: {}", this);
         }
 
         if (getUri() == null) {
