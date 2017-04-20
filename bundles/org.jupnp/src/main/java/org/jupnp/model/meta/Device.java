@@ -92,7 +92,7 @@ public abstract class Device<DI extends DeviceIdentity, D extends Device, S exte
                         validIcons.add(icon);
                     } else {
                         SpecificationViolationReporter
-                                .violate("Discarding invalid '" + icon + "': " + iconErrors);
+                                .report("Discarding invalid '" + icon + "': " + iconErrors, null);
                     }
                 }
             }

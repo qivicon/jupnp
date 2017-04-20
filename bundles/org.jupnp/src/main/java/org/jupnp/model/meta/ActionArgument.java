@@ -119,11 +119,11 @@ public class ActionArgument<S extends Service> implements Validatable {
                     "Argument without name of: " + getAction()
             ));
         } else if (!ModelUtil.isValidUDAName(getName())) {
-            SpecificationViolationReporter.violate(getAction().getService().getDevice(),
-                    "Invalid argument name: " + this);
+            SpecificationViolationReporter.report(getAction().getService().getDevice(),
+                    "Invalid argument name: " + this, null);
         } else if (getName().length() > 32) {
-            SpecificationViolationReporter.violate(getAction().getService().getDevice(),
-                    "Argument name should be less than 32 characters: " + this);
+            SpecificationViolationReporter.report(getAction().getService().getDevice(),
+                    "Argument name should be less than 32 characters: " + this, null);
         }
 
         if (getDirection() == null) {

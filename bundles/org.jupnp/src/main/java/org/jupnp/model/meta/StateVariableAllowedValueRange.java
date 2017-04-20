@@ -41,8 +41,8 @@ public class StateVariableAllowedValueRange implements Validatable {
 
     public StateVariableAllowedValueRange(long minimum, long maximum, long step) {
         if (minimum > maximum) {
-            SpecificationViolationReporter.violate("Allowed value range minimum '" + minimum
-                    + "' is greater than maximum '" + maximum + "', switching values.");
+            SpecificationViolationReporter.report("Allowed value range minimum '" + minimum
+                    + "' is greater than maximum '" + maximum + "', switching values.", null);
             this.minimum = maximum;
             this.maximum = minimum;
         } else {

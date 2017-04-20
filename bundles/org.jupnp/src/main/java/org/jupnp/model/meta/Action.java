@@ -143,8 +143,8 @@ public class Action<S extends Service> implements Validatable {
                     "Action without name of: " + getService()
             ));
         } else if (!ModelUtil.isValidUDAName(getName())) {
-            SpecificationViolationReporter.violate(getService().getDevice(),
-                    "Invalid action name: " + this);
+            SpecificationViolationReporter.report(getService().getDevice(),
+                    "Invalid action name: " + this, null);
         }
 
         for (ActionArgument actionArgument : getArguments()) {
@@ -166,12 +166,12 @@ public class Action<S extends Service> implements Validatable {
             // Check retval
             if (actionArgument.isReturnValue()) {
                 if (actionArgument.getDirection() == ActionArgument.Direction.IN) {
-					SpecificationViolationReporter.violate(getService().getDevice(),
-							"Input argument can not have <retval/>");
+					SpecificationViolationReporter.report(getService().getDevice(),
+							"Input argument can not have <retval/>", null);
                 } else {
                     if (retValueArgument != null) {
-						SpecificationViolationReporter.violate(getService().getDevice(),
-								"Only one argument of action '" + getName() + "' can be <retval/>");
+						SpecificationViolationReporter.report(getService().getDevice(),
+								"Only one argument of action '" + getName() + "' can be <retval/>", null);
                     }
                     retValueArgument = actionArgument;
                     retValueArgumentIndex = i;
@@ -183,9 +183,9 @@ public class Action<S extends Service> implements Validatable {
             for (int j = 0; j < retValueArgumentIndex; j++) {
                 ActionArgument a = getArguments()[j];
                 if (a.getDirection() == ActionArgument.Direction.OUT) {
-					SpecificationViolationReporter.violate(getService().getDevice(),
+					SpecificationViolationReporter.report(getService().getDevice(),
 							"Argument '" + retValueArgument.getName() + "' of action '" + getName()
-									+ "' is <retval/> but not the first OUT argument");
+									+ "' is <retval/> but not the first OUT argument", null);
                 }
             }
         }

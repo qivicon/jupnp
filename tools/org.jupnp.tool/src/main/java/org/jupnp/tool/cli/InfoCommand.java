@@ -39,55 +39,55 @@ public class InfoCommand {
 		this.tool = tool;
 	}
 
-    public int run(List<String> ipAddressOrUdns, boolean verbose) {
-        logger.info("Show information for devices " + flatList(ipAddressOrUdns));
-        if (verbose) {
-            SpecificationViolationReporter.enableReporting();
-        } else {
-            logger.debug("Disable UPnP specification violation reportings");
-            SpecificationViolationReporter.disableReporting();
-        }
+	public int run(List<String> ipAddressOrUdns, boolean verbose) {
+		logger.info("Show information for devices {}", flatList(ipAddressOrUdns));
+		if (verbose) {
+			SpecificationViolationReporter.enableReporting();
+		} else {
+			logger.debug("Disable UPnP specification violation reportings");
+			SpecificationViolationReporter.disableReporting();
+		}
 
-        UpnpService upnpService = tool.createUpnpService();
-        upnpService.startup();
-        upnpService.getControlPoint().search(new STAllHeader());
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            // ignore
-        }
+		UpnpService upnpService = tool.createUpnpService();
+		upnpService.startup();
+		upnpService.getControlPoint().search(new STAllHeader());
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// ignore
+		}
 
-        Registry registry = upnpService.getRegistry();
-        for (Iterator<RemoteDevice> iter = registry.getRemoteDevices().iterator(); iter.hasNext();) {
-            RemoteDevice device = iter.next();
+		Registry registry = upnpService.getRegistry();
+		for (Iterator<RemoteDevice> iter = registry.getRemoteDevices().iterator(); iter.hasNext();) {
+			RemoteDevice device = iter.next();
 
-            String ipAddress = device.getIdentity().getDescriptorURL().getHost();
-            String udn = device.getIdentity().getUdn().getIdentifierString();
-            logger.info("ip: " + ipAddress + ", udn=" + udn);
+			String ipAddress = device.getIdentity().getDescriptorURL().getHost();
+			String udn = device.getIdentity().getUdn().getIdentifierString();
+			logger.info("ip: {}, udn={}", ipAddress, udn);
 
-            for (Iterator<String> searchIiter = ipAddressOrUdns.iterator(); searchIiter.hasNext();) {
-                String ipAddressOrUdn = searchIiter.next();
-                boolean match = false;
-                if (isSameUdn(udn, ipAddressOrUdn)) {
-                    match = true;
-                } else {
-                    try {
-                        if (isSameIpAddress(ipAddress, ipAddressOrUdn)) {
-                            match = true;
-                        }
-                    } catch (IllegalArgumentException ex) {
-                        // ignore errors
-                    }
-                }
-                if (match) {
-                    showDeviceInfo(device, ipAddressOrUdn, verbose);
-                }
-            }
-        }
-        upnpService.shutdown();
+			for (Iterator<String> searchIiter = ipAddressOrUdns.iterator(); searchIiter.hasNext();) {
+				String ipAddressOrUdn = searchIiter.next();
+				boolean match = false;
+				if (isSameUdn(udn, ipAddressOrUdn)) {
+					match = true;
+				} else {
+					try {
+						if (isSameIpAddress(ipAddress, ipAddressOrUdn)) {
+							match = true;
+						}
+					} catch (IllegalArgumentException ex) {
+						// ignore errors
+					}
+				}
+				if (match) {
+					showDeviceInfo(device, ipAddressOrUdn, verbose);
+				}
+			}
+		}
+		upnpService.shutdown();
 
-        return JUPnPTool.RC_OK;
-    }
+		return JUPnPTool.RC_OK;
+	}
 
 	private void showDeviceInfo(RemoteDevice device, String searchCriteria, boolean verbose) {
 		logger.info(device.toString());

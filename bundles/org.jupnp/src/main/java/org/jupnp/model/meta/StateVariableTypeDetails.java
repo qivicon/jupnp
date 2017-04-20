@@ -115,13 +115,13 @@ public class StateVariableTypeDetails implements Validatable {
             for (String s : getAllowedValues()) {
                 if (s.length() > 31) {
                     SpecificationViolationReporter
-                            .violate("Allowed value string must be less than 32 chars: " + s);
+                            .report("Allowed value string must be less than 32 chars: " + s, null);
                 }
             }
 
             if(!foundDefaultInAllowedValues(defaultValue, allowedValues)) {
-                SpecificationViolationReporter.violate(
-                        "Allowed string values " + "don't contain default value: " + defaultValue);
+                SpecificationViolationReporter.report(
+                        "Allowed string values " + "don't contain default value: " + defaultValue, null);
             }
         }
 

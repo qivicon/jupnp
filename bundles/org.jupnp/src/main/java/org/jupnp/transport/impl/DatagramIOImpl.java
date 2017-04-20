@@ -159,17 +159,18 @@ public class DatagramIOImpl implements DatagramIO<DatagramIOConfigurationImpl> {
         } catch (RuntimeException ex) {
             throw ex;
         } catch (Exception ex) {
-            log.error("Exception sending datagram to: " + datagram.getAddress() + ": " + ex, ex);
-            log.error("  Details: datagram.socketAddress=" + datagram.getSocketAddress() + ", length="
-                    + datagram.getLength() + ", offfset=" + datagram.getOffset() + ", data.bytes="
-                    + datagram.getData().length);
-            try {
-                log.error("  Details: socket=" + socket.toString() + ", closed=" + socket.isClosed() + ", bound="
-                        + socket.isBound() + ", inetAddress=" + socket.getInetAddress() + ", remoteSocketAddress="
-                        + socket.getRemoteSocketAddress() + ", networkInterface=" + socket.getNetworkInterface());
-            } catch (SocketException ex2) {
-                log.error("  Details: could not get network interface due to " + ex2, ex2);
-            }
-        }
+			log.error("Exception sending datagram to: " + datagram.getAddress() + ": " + ex, ex);
+			log.error("  Details: datagram.socketAddress={}, length={}, offfset={}, data.bytes={}",
+					datagram.getSocketAddress(), datagram.getLength(), datagram.getOffset(), datagram.getData().length);
+			try {
+				log.error(
+						"  Details: socket={}, closed={}, bound={}, inetAddress={}, "
+								+ "remoteSocketAddress={}, networkInterface=" + socket.toString(),
+						socket.isClosed(), socket.isBound(), socket.getInetAddress(), socket.getRemoteSocketAddress(),
+						socket.getNetworkInterface());
+			} catch (SocketException ex2) {
+				log.error("  Details: could not get network interface due to {}", ex2, ex2);
+			}
+		}
     }
 }

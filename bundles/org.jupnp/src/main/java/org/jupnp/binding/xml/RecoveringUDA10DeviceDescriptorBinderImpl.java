@@ -160,12 +160,12 @@ public class RecoveringUDA10DeviceDescriptorBinderImpl extends UDA10DeviceDescri
     protected String fixGarbageTrailingChars(String descriptorXml, DescriptorBindingException ex) {
         int index = descriptorXml.indexOf("</root>");
         if (index == -1) {
-            SpecificationViolationReporter.violate("No closing </root> element in descriptor");
+            SpecificationViolationReporter.report("No closing </root> element in descriptor", null);
             return null;
         }
         if (descriptorXml.length() != index + "</root>".length()) {
             SpecificationViolationReporter
-                .violate("Detected garbage characters after <root> node, removing");
+                .report("Detected garbage characters after <root> node, removing", null);
             return descriptorXml.substring(0, index) + "</root>";
         }
         return null;
@@ -174,7 +174,7 @@ public class RecoveringUDA10DeviceDescriptorBinderImpl extends UDA10DeviceDescri
     protected String fixMimeTypes(String descriptorXml) {
         if (descriptorXml.contains("<mimetype>jpg</mimetype>")) {
             SpecificationViolationReporter
-                    .violate("Detected invalid mimetype 'jpg', replacing it with 'image/jpeg'");
+                    .report("Detected invalid mimetype 'jpg', replacing it with 'image/jpeg'", null);
             return descriptorXml.replaceAll("<mimetype>jpg</mimetype>", "<mimetype>image/jpeg</mimetype>");
         }
         return descriptorXml;
@@ -182,8 +182,8 @@ public class RecoveringUDA10DeviceDescriptorBinderImpl extends UDA10DeviceDescri
 
     protected String fixWrongNamespaces(String descriptorXml) {
         if (descriptorXml.contains("<root xmlns=\"urn:Belkin:device-1-0\">")) {
-            SpecificationViolationReporter.violate(
-                    "Detected invalid root namespace 'urn:Belkin', replacing it with 'urn:schemas-upnp-org'");
+            SpecificationViolationReporter.report(
+                    "Detected invalid root namespace 'urn:Belkin', replacing it with 'urn:schemas-upnp-org'", null);
             return descriptorXml.replaceAll("<root xmlns=\"urn:Belkin:device-1-0\">",
                     "<root xmlns=\"urn:schemas-upnp-org:device-1-0\">");
         }
@@ -215,7 +215,7 @@ public class RecoveringUDA10DeviceDescriptorBinderImpl extends UDA10DeviceDescri
         }
 
         String missingNS = matcher.group(1);
-        SpecificationViolationReporter.violate("Fixing missing namespace declaration for: " + missingNS);
+        SpecificationViolationReporter.report("Fixing missing namespace declaration for: " + missingNS, null);
 
         // Extract <root> attributes
         pattern = Pattern.compile("<root([^>]*)");
@@ -251,7 +251,7 @@ public class RecoveringUDA10DeviceDescriptorBinderImpl extends UDA10DeviceDescri
     protected String fixWemoMakerUDN(String descriptorXml) {
         if (descriptorXml.contains(":sensor:switch")) {
             SpecificationViolationReporter
-                    .violate("Detected invalid UDN value ':sensor:switch', replacing it");
+                    .report("Detected invalid UDN value ':sensor:switch', replacing it", null);
             descriptorXml = descriptorXml.replaceAll(":sensor:switch", "");
             return descriptorXml.replaceAll(":sensor:switch", "");
         }

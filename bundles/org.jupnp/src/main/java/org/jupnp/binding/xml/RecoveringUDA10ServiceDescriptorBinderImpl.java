@@ -43,8 +43,8 @@ public class RecoveringUDA10ServiceDescriptorBinderImpl extends UDA10ServiceDesc
     
     protected String fixWrongNamespaces(String descriptorXml) {
         if(descriptorXml.contains("<scpd xmlns=\"urn:Belkin:service-1-0\">")) {
-            SpecificationViolationReporter.violate(
-                    "Detected invalid scpd namespace 'urn:Belkin', replacing it with 'urn:schemas-upnp-org'");
+            SpecificationViolationReporter.report(
+                    "Detected invalid scpd namespace 'urn:Belkin', replacing it with 'urn:schemas-upnp-org'", null);
             return descriptorXml.replaceAll("<scpd xmlns=\"urn:Belkin:service-1-0\">", "<scpd xmlns=\"urn:schemas-upnp-org:service-1-0\">");
         }
         return descriptorXml;

@@ -133,8 +133,8 @@ public class UDA10DeviceDescriptorBinderImpl implements DeviceDescriptorBinder, 
     protected void hydrateRoot(MutableDevice descriptor, Element rootElement) throws DescriptorBindingException {
 
         if (rootElement.getNamespaceURI() == null || !rootElement.getNamespaceURI().equals(Descriptor.Device.NAMESPACE_URI)) {
-            SpecificationViolationReporter.violate(
-                    "Wrong XML namespace declared on root element: " + rootElement.getNamespaceURI());
+            SpecificationViolationReporter.report(
+                    "Wrong XML namespace declared on root element: " + rootElement.getNamespaceURI(), null);
         }
 
         if (!rootElement.getNodeName().equals(ELEMENT.root.name())) {
@@ -192,7 +192,7 @@ public class UDA10DeviceDescriptorBinderImpl implements DeviceDescriptorBinder, 
                 String version = XMLUtil.getTextContent(specVersionChild).trim();
                 if (!version.equals("1")) {
                     SpecificationViolationReporter
-                            .violate("Unsupported UDA major version, ignoring: " + version);
+                            .report("Unsupported UDA major version, ignoring: " + version, null);
                     version = "1";
                 }
                 descriptor.udaVersion.major = Integer.valueOf(version);
@@ -200,7 +200,7 @@ public class UDA10DeviceDescriptorBinderImpl implements DeviceDescriptorBinder, 
                 String version = XMLUtil.getTextContent(specVersionChild).trim();
                 if (!version.equals("0")) {
                     SpecificationViolationReporter
-                            .violate("Unsupported UDA minor version, ignoring: " + version);
+                            .report("Unsupported UDA minor version, ignoring: " + version, null);
                     version = "0";
                 }
                 descriptor.udaVersion.minor = Integer.valueOf(version);
@@ -294,8 +294,8 @@ public class UDA10DeviceDescriptorBinderImpl implements DeviceDescriptorBinder, 
                         try {
                             icon.depth = (Integer.valueOf(depth));
                         } catch(NumberFormatException ex) {
-                            SpecificationViolationReporter.violate(
-                                    "Invalid icon depth '" + depth + "', using 16 as default: " + ex);
+                            SpecificationViolationReporter.report(
+                                    "Invalid icon depth '" + depth + "', using 16 as default: " + ex, null);
                             icon.depth = 16;
                         }
                     } else if (ELEMENT.url.equals(iconChild)) {
@@ -306,7 +306,7 @@ public class UDA10DeviceDescriptorBinderImpl implements DeviceDescriptorBinder, 
                             MimeType.valueOf(icon.mimeType);
                         } catch(IllegalArgumentException ex) {
                             SpecificationViolationReporter
-                                    .violate("Ignoring invalid icon mime type: " + icon.mimeType);
+                                    .report("Ignoring invalid icon mime type: " + icon.mimeType, null);
                             icon.mimeType = "";
                         }
                     }
@@ -357,7 +357,7 @@ public class UDA10DeviceDescriptorBinderImpl implements DeviceDescriptorBinder, 
                     descriptor.services.add(service);
                 } catch (InvalidValueException ex) {
                     SpecificationViolationReporter
-                            .violate("Skipping invalid service declaration. " + ex.getMessage()
+                            .report("Skipping invalid service declaration. " + ex.getMessage(), null
                     );
                 }
             }
@@ -624,8 +624,8 @@ public class UDA10DeviceDescriptorBinderImpl implements DeviceDescriptorBinder, 
             //
             return URI.create("./" + uri);
         } catch (IllegalArgumentException ex) {
-            SpecificationViolationReporter.violate(
-                    "Illegal URI '" + uri + "', ignoring value: " + Exceptions.unwrap(ex));
+            SpecificationViolationReporter.report(
+                    "Illegal URI '" + uri + "', ignoring value: " + Exceptions.unwrap(ex), null);
             // Ignore
         }
         return null;

@@ -63,14 +63,14 @@ public class ReceivingAction extends ReceivingSync<StreamRequestMessage, StreamR
         // 'If the CONTENT-TYPE header specifies an unsupported value (other then "text/xml") the
         // device must return an HTTP status code "415 Unsupported Media Type".'
         if (contentTypeHeader != null && !contentTypeHeader.isUDACompliantXML()) {
-            SpecificationViolationReporter.violate(
-                    "Received invalid Content-Type '" + contentTypeHeader + "': " + getInputMessage());
+            SpecificationViolationReporter.report(
+                    "Received invalid Content-Type '" + contentTypeHeader + "': " + getInputMessage(), null);
             return new StreamResponseMessage(new UpnpResponse(UpnpResponse.Status.UNSUPPORTED_MEDIA_TYPE));
         }
 
         if (contentTypeHeader == null) {
             SpecificationViolationReporter
-                    .violate("Received without Content-Type: " + getInputMessage());
+                    .report("Received without Content-Type: " + getInputMessage(), null);
         }
 
         ServiceControlResource resource =

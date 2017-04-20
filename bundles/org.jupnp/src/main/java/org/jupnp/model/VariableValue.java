@@ -94,7 +94,7 @@ public class VariableValue {
                     (cp >= 0x20 && cp <= 0xD7FF) ||
                     (cp >= 0xE000 && cp <= 0xFFFD) ||
                     (cp >= 0x10000 && cp <= 0x10FFFF))) {
-                SpecificationViolationReporter.violate("Found invalid XML char code: " + cp);
+                SpecificationViolationReporter.report("Found invalid XML char code: " + cp, null);
             }
             i += Character.charCount(cp);
         }

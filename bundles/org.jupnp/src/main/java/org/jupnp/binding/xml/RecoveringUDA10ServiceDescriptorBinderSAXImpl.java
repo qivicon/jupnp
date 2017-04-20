@@ -63,7 +63,7 @@ public class RecoveringUDA10ServiceDescriptorBinderSAXImpl extends UDA10ServiceD
             String newXml;
             Matcher junkMatcher = (Pattern.compile("^([\\W]+)<")).matcher(descriptorXml.trim());
             newXml = junkMatcher.replaceFirst("<");
-            SpecificationViolationReporter.violate("Detected UTF-8 BOM, replacing it");
+            SpecificationViolationReporter.report("Detected UTF-8 BOM, replacing it", null);
             return newXml.replaceAll("\0", " ");
         }
         return descriptorXml;
@@ -74,7 +74,7 @@ public class RecoveringUDA10ServiceDescriptorBinderSAXImpl extends UDA10ServiceD
         if (descriptorXml.contains("<scpd xmlns=\"urn:Belkin:service-1-0\">")) {
             if (descriptorXml.contains("<retval")) {
                 SpecificationViolationReporter
-                    .violate("Detected invalid service value 'retval', replacing it");
+                    .report("Detected invalid service value 'retval', replacing it", null);
                 descriptorXml = descriptorXml.replaceAll("<retval/>", " ");
                 return descriptorXml.replaceAll("<retval />", " ");
             }
@@ -86,7 +86,7 @@ public class RecoveringUDA10ServiceDescriptorBinderSAXImpl extends UDA10ServiceD
     protected String fixQuotes(String descriptorXml) {
         if (descriptorXml.contains("<scpd xmlns=\"urn:Belkin:service-1-0\">")) {
             if (descriptorXml.contains("Key\"")) {
-                SpecificationViolationReporter.violate("Detected invalid quotes, replacing it");
+                SpecificationViolationReporter.report("Detected invalid quotes, replacing it", null);
                 descriptorXml = descriptorXml.replaceAll("\"smartprivateKey\"", "smartprivateKey");
                 return descriptorXml.replaceAll("\"pluginprivateKey\"", "pluginprivateKey");
             }

@@ -102,7 +102,7 @@ public class DeviceType {
             matcher = Pattern.compile("urn:(" + Constants.REGEX_NAMESPACE + "):device::([0-9]+).*").matcher(s);
             if (matcher.matches() && matcher.groupCount() >= 2) {
                 SpecificationViolationReporter
-                        .violate("No device type token, defaulting to " + UNKNOWN + ": " + s);
+                        .report("No device type token, defaulting to " + UNKNOWN + ": " + s, null);
                 return new DeviceType(matcher.group(1), UNKNOWN, Integer.valueOf(matcher.group(2)));
             }
 
@@ -111,8 +111,8 @@ public class DeviceType {
             matcher = Pattern.compile("urn:(" + Constants.REGEX_NAMESPACE + "):device:(.+?):([0-9]+).*").matcher(s);
             if (matcher.matches() && matcher.groupCount() >= 3) {
                 String cleanToken = matcher.group(2).replaceAll("[^a-zA-Z_0-9\\-]", "-");
-                SpecificationViolationReporter.violate(
-                        "Replacing invalid device type token '" + matcher.group(2) + "' with: " + cleanToken);
+                SpecificationViolationReporter.report(
+                        "Replacing invalid device type token '" + matcher.group(2) + "' with: " + cleanToken, null);
                 return new DeviceType(matcher.group(1), cleanToken, Integer.valueOf(matcher.group(3)));
             }
         } catch (RuntimeException e) {

@@ -140,7 +140,7 @@ public class UDA10DeviceDescriptorBinderSAXImpl extends UDA10DeviceDescriptorBin
                     String majorVersion = getCharacters().trim();
                     if (!majorVersion.equals("1")) {
                         SpecificationViolationReporter
-                                .violate("Unsupported UDA major version, ignoring: " + majorVersion);
+                                .report("Unsupported UDA major version, ignoring: " + majorVersion, null);
                         majorVersion = "1";
                     }
                     getInstance().major = Integer.valueOf(majorVersion);
@@ -149,7 +149,7 @@ public class UDA10DeviceDescriptorBinderSAXImpl extends UDA10DeviceDescriptorBin
                     String minorVersion = getCharacters().trim();
                     if (!minorVersion.equals("0")) {
                         SpecificationViolationReporter
-                                .violate("Unsupported UDA minor version, ignoring: " + minorVersion);
+                                .report("Unsupported UDA minor version, ignoring: " + minorVersion, null);
                         minorVersion = "0";
                     }
                     getInstance().minor = Integer.valueOf(minorVersion);
@@ -237,8 +237,8 @@ public class UDA10DeviceDescriptorBinderSAXImpl extends UDA10DeviceDescriptorBin
                     try {
                         getInstance().dlnaDocs.add(DLNADoc.valueOf(txt));
                     } catch (InvalidValueException ex) {
-                        SpecificationViolationReporter.violate(
-                                "Invalid X_DLNADOC value, ignoring value: " + txt);
+                        SpecificationViolationReporter.report(
+                                "Invalid X_DLNADOC value, ignoring value: " + txt, null);
                     }
                     break;
                 case X_DLNACAP:
@@ -297,8 +297,8 @@ public class UDA10DeviceDescriptorBinderSAXImpl extends UDA10DeviceDescriptorBin
                     try {
                         getInstance().depth = Integer.valueOf(getCharacters());
                     } catch(NumberFormatException ex) {
-                        SpecificationViolationReporter.violate(
-                                "Invalid icon depth '" + getCharacters() + "', using 16 as default: " + ex);
+                        SpecificationViolationReporter.report(
+                                "Invalid icon depth '" + getCharacters() + "', using 16 as default: " + ex, null);
                         getInstance().depth = 16;
                     }
                     break;
@@ -311,7 +311,7 @@ public class UDA10DeviceDescriptorBinderSAXImpl extends UDA10DeviceDescriptorBin
                         MimeType.valueOf(getInstance().mimeType);
                     } catch(IllegalArgumentException ex) {
                         SpecificationViolationReporter
-                                .violate("Ignoring invalid icon mime type: " + getInstance().mimeType);
+                                .report("Ignoring invalid icon mime type: " + getInstance().mimeType, null);
                         getInstance().mimeType = "";
                     }
                     break;
@@ -386,7 +386,7 @@ public class UDA10DeviceDescriptorBinderSAXImpl extends UDA10DeviceDescriptorBin
                 }
             } catch (InvalidValueException ex) {
                 SpecificationViolationReporter
-                        .violate("Skipping invalid service declaration. " + ex.getMessage());
+                        .report("Skipping invalid service declaration. " + ex.getMessage(), null);
             }
         }
 
