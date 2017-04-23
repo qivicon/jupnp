@@ -18,15 +18,19 @@ package org.fourthline.cling.transport.impl;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
-import org.fourthline.cling.model.message.Connection;
-import org.fourthline.cling.transport.Router;
-import org.fourthline.cling.transport.spi.InitializationException;
-import org.fourthline.cling.transport.spi.StreamServer;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.jupnp.model.message.Connection;
+import org.jupnp.transport.Router;
+import org.jupnp.transport.spi.InitializationException;
+import org.jupnp.transport.spi.StreamServer;
+
 
 /**
  * Implementation based on the built-in SUN JDK 6.0 HTTP Server.
@@ -43,11 +47,13 @@ import java.util.logging.Logger;
  * heartbeats to the client. We don't have access to the raw socket with the Sun API.
  * </p>
  *
- * @author Christian Bauer
+ * @author Christian Bauer - initial contribution
+ * @author Victor Toni - refactoring for JUPnP
  */
+@SuppressWarnings("sunapi")
 public class StreamServerImpl implements StreamServer<StreamServerConfigurationImpl> {
 
-    private static Logger log = Logger.getLogger(StreamServer.class.getName());
+    private static Logger log = LoggerFactory.getLogger(StreamServer.class.getName());
 
     final protected StreamServerConfigurationImpl configuration;
     protected HttpServer server;
@@ -63,7 +69,7 @@ public class StreamServerImpl implements StreamServer<StreamServerConfigurationI
             server = HttpServer.create(socketAddress, configuration.getTcpConnectionBacklog());
             server.createContext("/", new RequestHttpHandler(router));
 
-            log.info("Created server (for receiving TCP streams) on: " + server.getAddress());
+            log.info("Created server (for receiving TCP streams) on: {}", server.getAddress());
 
         } catch (Exception ex) {
             throw new InitializationException("Could not initialize " + getClass().getSimpleName() + ": " + ex.toString(), ex);
@@ -79,13 +85,13 @@ public class StreamServerImpl implements StreamServer<StreamServerConfigurationI
     }
 
     synchronized public void run() {
-        log.fine("Starting StreamServer...");
+        log.trace("Starting StreamServer...");
         // Starts a new thread but inherits the properties of the calling thread
         server.start();
     }
 
     synchronized public void stop() {
-        log.fine("Stopping StreamServer...");
+        log.trace("Stopping StreamServer...");
         if (server != null) server.stop(1);
     }
 
@@ -101,7 +107,7 @@ public class StreamServerImpl implements StreamServer<StreamServerConfigurationI
         public void handle(final HttpExchange httpExchange) throws IOException {
             // And we pass control to the service, which will (hopefully) start a new thread immediately so we can
             // continue the receiving thread ASAP
-            log.fine("Received HTTP exchange: " + httpExchange.getRequestMethod() + " " + httpExchange.getRequestURI());
+            log.trace("Received HTTP exchange: {} {}", httpExchange.getRequestMethod(), httpExchange.getRequestURI());
             router.received(
                 new HttpExchangeUpnpStream(router.getProtocolFactory(), httpExchange) {
                     @Override
@@ -120,7 +126,7 @@ public class StreamServerImpl implements StreamServer<StreamServerConfigurationI
      * </p>
      */
     protected boolean isConnectionOpen(HttpExchange exchange) {
-        log.warning("Can't check client connection, socket access impossible on JDK webserver!");
+        log.warn("Can't check client connection, socket access impossible on JDK webserver!");
         return true;
     }
 

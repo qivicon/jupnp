@@ -15,7 +15,7 @@
 
 package org.fourthline.cling.transport.impl;
 
-import org.fourthline.cling.transport.spi.StreamServerConfiguration;
+import org.jupnp.transport.spi.StreamServerConfiguration;
 
 /**
  * Settings for the default implementation.
