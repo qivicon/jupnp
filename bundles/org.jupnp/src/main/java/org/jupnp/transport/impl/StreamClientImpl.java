@@ -13,7 +13,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-package org.fourthline.cling.transport.impl;
+package org.jupnp.transport.impl;
 
 import java.io.IOException;
 import java.io.InputStream;

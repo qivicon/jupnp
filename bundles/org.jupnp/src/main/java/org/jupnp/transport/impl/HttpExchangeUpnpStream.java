@@ -13,7 +13,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-package org.fourthline.cling.transport.impl;
+package org.jupnp.transport.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,16 +23,16 @@ import java.util.Locale;
 
 import com.sun.net.httpserver.HttpExchange;
 
-import org.fourthline.cling.model.message.Connection;
-import org.fourthline.cling.model.message.StreamRequestMessage;
-import org.fourthline.cling.model.message.StreamResponseMessage;
-import org.fourthline.cling.model.message.UpnpHeaders;
-import org.fourthline.cling.model.message.UpnpMessage;
-import org.fourthline.cling.model.message.UpnpRequest;
-import org.fourthline.cling.protocol.ProtocolFactory;
-import org.fourthline.cling.transport.spi.UpnpStream;
-import org.seamless.util.Exceptions;
-import org.seamless.util.io.IO;
+import org.jupnp.model.message.Connection;
+import org.jupnp.model.message.StreamRequestMessage;
+import org.jupnp.model.message.StreamResponseMessage;
+import org.jupnp.model.message.UpnpHeaders;
+import org.jupnp.model.message.UpnpMessage;
+import org.jupnp.model.message.UpnpRequest;
+import org.jupnp.protocol.ProtocolFactory;
+import org.jupnp.transport.spi.UpnpStream;
+import org.jupnp.util.Exceptions;
+import org.jupnp.util.io.IO;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
