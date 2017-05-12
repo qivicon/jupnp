@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Bundle-ClassPath: .,jupnp-osgi-tests-common-2.2.4.jar,commons-codec-1.
+Bundle-ClassPath: .,jupnp-osgi-tests-common-2.2.5.jar,commons-codec-1.
  4.jar
 Built-By: niehues
 Bundle-Author: Bruce Green
@@ -8,7 +8,7 @@ Bundle-Name: jUPnP OSGi Test Simple Device
 Created-By: Apache Maven Bundle Plugin
 Bundle-Vendor: jUPnP.org
 Build-Jdk: 1.7.0_55
-Bundle-Version: 2.2.4
+Bundle-Version: 2.2.5
 SymbolicName: org.jupnp.osgi.upnp.test.device.simple
 Bnd-LastModified: 1494397419628
 Embed-Transitive: false
