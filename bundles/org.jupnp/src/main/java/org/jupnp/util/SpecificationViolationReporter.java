@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
  * disable these checks for performance improvement and to avoid flooding of
  * logs if you have UPnP devices in your network which do not comply to UPnP
  * specifications.
- * 
+ *
  * @author Jochen Hiller
  */
 public class SpecificationViolationReporter {
@@ -38,7 +38,7 @@ public class SpecificationViolationReporter {
 	 * changes in arbitrary threads immediately.
 	 */
 	private static volatile boolean enabled = Boolean
-			.valueOf(System.getProperty(PROPERTY_ENABLE_VIOLATION_REPORTER, "true"));
+            .valueOf(System.getProperty(PROPERTY_ENABLE_VIOLATION_REPORTER, "false"));
 
 	private static Logger logger = LoggerFactory.getLogger(SpecificationViolationReporter.class);
 
