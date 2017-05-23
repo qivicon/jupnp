@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.jupnp</groupId>
         <artifactId>jupnp</artifactId>
-        <version>2.2.7</version>
+        <version>2.2.9</version>
     </parent>
 
     <name>jUPnP Bundles</name>
@@ -86,47 +86,6 @@
 					</environments>
 				</configuration>
 			</plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <version>2.10.3</version>
-            <executions>
-              <execution>
-                <id>jar</id>
-                <goals>
-                  <goal>jar</goal>
-                </goals>
-              </execution>
-            </executions>
-            <configuration>
-              <!-- 'javadoc.opts' project property is set by the 'doclint-java8-disable' profile. It is important to keep 'javadoc' profile declaration after the declaration of 'doclint-java8-disable' profile. -->
-              <additionalparam>${javadoc.opts}</additionalparam>
-              <excludePackageNames>*.internal.*,nl.*</excludePackageNames>
-            </configuration>
-          </plugin>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>build-helper-maven-plugin</artifactId>
-            <version>1.8</version>
-            <executions>
-              <execution>
-                <id>attach-artifacts</id>
-                <phase>install</phase>
-                <goals>
-                  <goal>attach-artifact</goal>
-                </goals>
-                <configuration>
-                  <artifacts>
-                    <artifact>
-                      <file>${project.build.outputDirectory}/${project.artifactId}-${project.version}.jar</file>
-                      <type>jar</type>
-                      <classifier>javadoc</classifier>
-                    </artifact>
-                  </artifacts>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
 		</plugins>
 
 		<pluginManagement>
