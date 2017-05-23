@@ -15,9 +15,9 @@ Import-Package: org.osgi.framework;version="[1.5,2)",org.osgi.service.
  .osgi.service.upnp;version="[1.1,2)",org.osgi.util.tracker;version="[
  1.4,2)",org.slf4j;version="[1.7,2)"
 Tool: Bnd-1.15.0
-Bundle-Version: 2.2.6
+Bundle-Version: 2.2.7
 Bundle-Name: jUPnP OSGi Test Simple Device
-Bundle-ClassPath: .,jupnp-osgi-tests-common-2.2.6.jar,commons-codec-1.
+Bundle-ClassPath: .,jupnp-osgi-tests-common-2.2.7.jar,commons-codec-1.
  4.jar
 Bundle-Activator: org.jupnp.osgi.upnp.test.device.simple.Activator
 Embed-Transitive: false
