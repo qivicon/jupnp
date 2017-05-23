@@ -34,7 +34,7 @@
           </execution>
         </executions>
       </plugin>
-          <plugin>
+          <!--plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
             <version>2.10.3</version>
@@ -46,9 +46,9 @@
                 </goals>
               </execution>
             </executions>
-            <configuration>
+            <configuration-->
               <!-- 'javadoc.opts' project property is set by the 'doclint-java8-disable' profile. It is important to keep 'javadoc' profile declaration after the declaration of 'doclint-java8-disable' profile. -->
-              <additionalparam>${javadoc.opts}</additionalparam>
+              <!--additionalparam>${javadoc.opts}</additionalparam>
               <excludePackageNames>*.internal.*,nl.*</excludePackageNames>
             </configuration>
           </plugin>
@@ -74,7 +74,7 @@
                 </configuration>
               </execution>
             </executions>
-          </plugin>
+          </plugin-->
         </plugins>
 	</build>	
 </project>
