@@ -46,6 +46,7 @@ import org.slf4j.LoggerFactory;
  * @author Christian Bauer - initial contribution
  * @author Victor Toni - refactoring for JUPnP
  */
+@SuppressWarnings("restriction")
 public abstract class HttpExchangeUpnpStream extends UpnpStream {
 
     private static Logger log = LoggerFactory.getLogger(UpnpStream.class.getName());
@@ -61,6 +62,7 @@ public abstract class HttpExchangeUpnpStream extends UpnpStream {
         return httpExchange;
     }
 
+    @Override
     public void run() {
 
         try {

@@ -50,7 +50,7 @@ import org.jupnp.transport.spi.StreamServer;
  * @author Christian Bauer - initial contribution
  * @author Victor Toni - refactoring for JUPnP
  */
-@SuppressWarnings("sunapi")
+@SuppressWarnings("restriction")
 public class StreamServerImpl implements StreamServer<StreamServerConfigurationImpl> {
 
     private static Logger log = LoggerFactory.getLogger(StreamServer.class.getName());
@@ -62,6 +62,7 @@ public class StreamServerImpl implements StreamServer<StreamServerConfigurationI
         this.configuration = configuration;
     }
 
+    @Override
     synchronized public void init(InetAddress bindAddress, Router router) throws InitializationException {
         try {
             InetSocketAddress socketAddress = new InetSocketAddress(bindAddress, configuration.getListenPort());
@@ -76,20 +77,24 @@ public class StreamServerImpl implements StreamServer<StreamServerConfigurationI
         }
     }
 
+    @Override
     synchronized public int getPort() {
         return server.getAddress().getPort();
     }
 
+    @Override
     public StreamServerConfigurationImpl getConfiguration() {
         return configuration;
     }
 
+    @Override
     synchronized public void run() {
         log.trace("Starting StreamServer...");
         // Starts a new thread but inherits the properties of the calling thread
         server.start();
     }
 
+    @Override
     synchronized public void stop() {
         log.trace("Stopping StreamServer...");
         if (server != null) server.stop(1);
@@ -104,6 +109,7 @@ public class StreamServerImpl implements StreamServer<StreamServerConfigurationI
         }
 
         // This is executed in the request receiving thread!
+        @Override
         public void handle(final HttpExchange httpExchange) throws IOException {
             // And we pass control to the service, which will (hopefully) start a new thread immediately so we can
             // continue the receiving thread ASAP
