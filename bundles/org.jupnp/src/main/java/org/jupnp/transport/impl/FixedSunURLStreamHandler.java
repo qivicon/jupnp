@@ -22,7 +22,10 @@ import java.net.Proxy;
 import java.net.URL;
 import java.net.URLStreamHandler;
 import java.net.URLStreamHandlerFactory;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  *
@@ -40,17 +43,20 @@ import java.util.logging.Logger;
  */
 public class FixedSunURLStreamHandler implements URLStreamHandlerFactory {
 
-    final private static Logger log = Logger.getLogger(FixedSunURLStreamHandler.class.getName());
+    final private static Logger log = LoggerFactory.getLogger(FixedSunURLStreamHandler.class.getName());
 
+    @Override
     public URLStreamHandler createURLStreamHandler(String protocol) {
-        log.fine("Creating new URLStreamHandler for protocol: " + protocol);
+        log.trace("Creating new URLStreamHandler for protocol: {}", protocol);
         if ("http".equals(protocol)) {
             return new sun.net.www.protocol.http.Handler() {
 
+                @Override
                 protected java.net.URLConnection openConnection(URL u) throws IOException {
                     return openConnection(u, null);
                 }
 
+                @Override
                 protected java.net.URLConnection openConnection(URL u, Proxy p) throws IOException {
                     return new UpnpURLConnection(u, this);
                 }
@@ -75,6 +81,7 @@ public class FixedSunURLStreamHandler implements URLStreamHandlerFactory {
             super(u, host, port);
         }
 
+        @Override
         public synchronized OutputStream getOutputStream() throws IOException {
             OutputStream os;
             String savedMethod = method;
@@ -92,6 +99,7 @@ public class FixedSunURLStreamHandler implements URLStreamHandlerFactory {
             return os;
         }
 
+        @Override
         public void setRequestMethod(String method) throws ProtocolException {
             if (connected) {
                 throw new ProtocolException("Cannot reset method once connected");
