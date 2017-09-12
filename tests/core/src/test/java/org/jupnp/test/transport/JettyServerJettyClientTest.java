@@ -20,7 +20,7 @@ import org.jupnp.transport.impl.ServletStreamServerConfigurationImpl;
 import org.jupnp.transport.impl.ServletStreamServerImpl;
 import org.jupnp.transport.impl.jetty.JettyServletContainer;
 import org.jupnp.transport.impl.jetty.StreamClientConfigurationImpl;
-import org.jupnp.transport.impl.jetty.StreamClientImpl;
+import org.jupnp.transport.impl.jetty.JettyStreamClientImpl;
 import org.jupnp.transport.spi.StreamClient;
 import org.jupnp.transport.spi.StreamServer;
 
@@ -45,7 +45,7 @@ public class JettyServerJettyClientTest extends StreamServerClientTest {
 
     @Override
     public StreamClient createStreamClient(UpnpServiceConfiguration configuration) {
-        return new StreamClientImpl(
+        return new JettyStreamClientImpl(
             new StreamClientConfigurationImpl(
                 configuration.getSyncProtocolExecutorService(),
                 3

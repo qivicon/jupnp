@@ -20,9 +20,10 @@ import org.jupnp.transport.spi.AbstractStreamClientConfiguration;
 import java.util.concurrent.ExecutorService;
 
 /**
- * Settings for the Jetty 8 implementation.
+ * Settings for the Jetty 9.3.x implementation.
  *
- * @author Christian Bauer
+ * @author Christian Bauer - initial contribution
+ * @author Victor Toni - add option for buffer size
  */
 public class StreamClientConfigurationImpl extends AbstractStreamClientConfiguration {
 
@@ -37,8 +38,17 @@ public class StreamClientConfigurationImpl extends AbstractStreamClientConfigura
     /**
      * @return By default <code>0</code>.
      */
-	public int getRequestRetryCount() {
-		return 0;
-	}
+    public int getRequestRetryCount() {
+        return 0;
+    }
+
+    /**
+     * Note: leaving this to the default value of {@code -1} will let the HTTP client use its defaults.
+     *
+     * @return By default <code>-1</code>, change to change buffer size)
+     */
+    public int getSocketBufferSize() {
+        return -1;
+    }
 
 }

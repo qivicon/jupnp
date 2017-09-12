@@ -20,10 +20,8 @@ import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.bio.SocketConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.eclipse.jetty.util.thread.ExecutorThreadPool;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +32,7 @@ import org.jupnp.transport.spi.ServletContainerAdapter;
  * A singleton wrapper of a <code>org.eclipse.jetty.server.Server</code>.
  * <p>
  * This {@link org.fourthline.cling.transport.spi.ServletContainerAdapter} starts
- * a Jetty 8 instance on its own and stops it. Only one single context and servlet
+ * a Jetty 9.3.x instance on its own and stops it. Only one single context and servlet
  * is registered, to handle UPnP requests.
  * </p>
  * <p>
@@ -59,43 +57,18 @@ public class JettyServletContainer implements ServletContainerAdapter {
 
     @Override
     synchronized public void setExecutorService(ExecutorService executorService) {
-        if (INSTANCE.server.getThreadPool() == null) {
-            INSTANCE.server.setThreadPool(new ExecutorThreadPool(executorService) {
-                @Override
-                protected void doStop() throws Exception {
-                    // Do nothing, don't shut down the Cling ExecutorService when Jetty stops!
-                }
-            });
-        }
+        // the Jetty server has its own QueuedThreadPool
     }
 
     @Override
     synchronized public int addConnector(String host, int port) throws IOException {
-        SocketConnector connector = new SocketConnector();
-        connector.setHost(host);
-        connector.setPort(port);
-
-        // Open immediately so we can get the assigned local port
-        connector.open();
-
-        // Only add if open() succeeded
-        server.addConnector(connector);
-
-        // stats the connector if the server is started (server starts all connectors when started)
-        if (server.isStarted()) {
-            try {
-                connector.start();
-            } catch (Exception ex) {
-                log.error("Couldn't start connector: {} {}", connector, ex);
-                throw new RuntimeException(ex);
-            }
-        }
-        return connector.getLocalPort();
+        return port;
     }
 
     @Override
     synchronized public void registerServlet(String contextPath, Servlet servlet) {
         if (server.getHandler() != null) {
+            log.trace("Server handler is already set: {}", server.getHandler() );
             return;
         }
         log.info("Registering UPnP servlet under context path: " + contextPath);
@@ -104,7 +77,7 @@ public class JettyServletContainer implements ServletContainerAdapter {
         if (contextPath != null && contextPath.length() > 0) {
             servletHandler.setContextPath(contextPath);
         }
-        ServletHolder s = new ServletHolder(servlet);
+        final ServletHolder s = new ServletHolder(servlet);
         servletHandler.addServlet(s, "/*");
         server.setHandler(servletHandler);
     }
@@ -139,7 +112,6 @@ public class JettyServletContainer implements ServletContainerAdapter {
 
     protected void resetServer() {
         server = new Server(); // Has its own QueuedThreadPool
-        server.setGracefulShutdown(1000); // Let's wait a second for ongoing transfers to complete
     }
 
 }
