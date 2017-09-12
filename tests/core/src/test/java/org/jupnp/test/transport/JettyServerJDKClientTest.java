@@ -12,12 +12,12 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
-package org.fourthline.cling.test.transport;
+package org.jupnp.test.transport;
 
-import org.fourthline.cling.UpnpServiceConfiguration;
-import org.fourthline.cling.transport.impl.StreamClientConfigurationImpl;
-import org.fourthline.cling.transport.impl.StreamClientImpl;
-import org.fourthline.cling.transport.spi.StreamClient;
+import org.jupnp.UpnpServiceConfiguration;
+import org.jupnp.transport.impl.StreamClientConfigurationImpl;
+import org.jupnp.transport.impl.StreamClientImpl;
+import org.jupnp.transport.spi.StreamClient;
 
 /**
  * @author Christian Bauer
