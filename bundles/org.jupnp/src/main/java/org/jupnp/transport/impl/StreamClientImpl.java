@@ -109,7 +109,7 @@ public class StreamClientImpl implements StreamClient {
                 // loads on Android, even if it doesn't work...
                 URL.setURLStreamHandlerFactory(
                     (URLStreamHandlerFactory) Class.forName(
-                        "org.fourthline.cling.transport.impl.FixedSunURLStreamHandler"
+                        "org.jupnp.transport.impl.FixedSunURLStreamHandler"
                     ).newInstance()
                 );
             } catch (Throwable t) {
