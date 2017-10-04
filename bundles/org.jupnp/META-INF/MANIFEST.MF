@@ -6,7 +6,8 @@ Bundle-Version: 2.3.0.qualifier
 Bundle-Vendor: jUPnP.org
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Service-Component: OSGI-INF/*.xml
-Import-Package: javax.servlet,
+Import-Package: 
+ javax.servlet,
  javax.servlet.http,
  javax.xml,
  javax.xml.namespace,
@@ -18,6 +19,8 @@ Import-Package: javax.servlet,
  javax.xml.validation,
  javax.xml.xpath,
  org.eclipse.jetty.client;version="[9.3.14,10)",
+ org.eclipse.jetty.client.api;version="[9.3.14,10)",
+ org.eclipse.jetty.client.util;version="[9.3.14,10)",
  org.eclipse.jetty.http;version="[9.3.14,10)",
  org.eclipse.jetty.io;version="[9.3.14,10)",
  org.eclipse.jetty.server;version="[9.3.14,10)",
