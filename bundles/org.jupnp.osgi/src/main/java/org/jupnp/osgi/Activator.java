@@ -53,7 +53,7 @@ public class Activator implements BundleActivator {
         Activator.plugin = this;
         this.context = context;
 
-        upnpService = new UpnpServiceImpl(new ApacheUpnpServiceConfiguration());
+        upnpService = new UpnpServiceImpl(new JettyUpnpServiceConfiguration());
         discover = new UPnPDiscover(context, upnpService);
         present = new UPnPPresent(context, upnpService);
         upnpService.getControlPoint().search();
