@@ -30,7 +30,7 @@
                 </configuration>
             </plugin>
 
-            <plugin>
+            <!--plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <executions>
                     <execution>
@@ -47,11 +47,11 @@
                     </descriptors>
                     <workDirectory>target/assembly/work</workDirectory>
                     <appendAssemblyId>false</appendAssemblyId>
-                    <archiveBaseDirectory>../</archiveBaseDirectory>
+                    <archiveBaseDirectory>../</archiveBaseDirectory-->
                     <!-- Quality software! Just ignore the warning... http://jira.codehaus.org/browse/MASSEMBLY-289 -->
-                    <attach>false</attach>
+                    <!--attach>false</attach>
                 </configuration>
-            </plugin>
+            </plugin-->
 			<plugin>
 				<groupId>${tycho-groupid}</groupId>
 				<artifactId>target-platform-configuration</artifactId>
