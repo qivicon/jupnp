@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: JUPnP Library
 Bundle-SymbolicName: org.jupnp
-Bundle-Version: 2.3.0.QC11
+Bundle-Version: 2.3.0.QC16
 Bundle-Vendor: jUPnP.org
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Service-Component: OSGI-INF/*.xml

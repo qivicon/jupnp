@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.jupnp</groupId>
         <artifactId>jupnp</artifactId>
-        <version>2.3.0.QC11</version>
+        <version>2.3.0.QC16</version>
     </parent>
 
     <name>jUPnP Bundles</name>
@@ -90,24 +90,6 @@
 					</environments>
 				</configuration>
 			</plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <version>2.10.3</version>
-            <executions>
-              <execution>
-                <id>jar</id>
-                <goals>
-                  <goal>jar</goal>
-                </goals>
-              </execution>
-            </executions>
-            <configuration>
-              <!-- 'javadoc.opts' project property is set by the 'doclint-java8-disable' profile. It is important to keep 'javadoc' profile declaration after the declaration of 'doclint-java8-disable' profile. -->
-              <additionalparam>${javadoc.opts}</additionalparam>
-              <excludePackageNames>*.internal.*,nl.*</excludePackageNames>
-            </configuration>
-          </plugin>
 		</plugins>
 
 		<pluginManagement>
