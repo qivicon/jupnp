@@ -33,6 +33,7 @@
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <executions>
+                	<!-- This builds the zip of jars as general distribution -->
                     <execution>
                         <id>package-distribution</id>
                         <phase>package</phase>
@@ -51,6 +52,7 @@
 		                    <finalName>jupnp-distribution-${project.version}</finalName>
 		                </configuration>
                     </execution>
+                    <!-- This build the p2repo-${project.version}.zip, suitable for upload to Nexus as p2 repository -->
                     <execution>
                         <id>package-p2repo</id>
                         <phase>package</phase>
