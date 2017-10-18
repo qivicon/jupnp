@@ -14,11 +14,10 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 -->
-
 <feature
       id="org.jupnp.feature"
       label="jUPnP"
-      version="2.2.11"
+      version="2.3.1.QC17"
       provider-name="openHAB UG">
 
    <description>
