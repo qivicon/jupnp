@@ -80,5 +80,4 @@ public class SpecificationViolationReporter {
     public static void report(Device<DeviceIdentity, Device, Service> device, String format, Object... arguments) {
         INSTANCE._report(device, format, arguments);
     }
-
 }

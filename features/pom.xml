@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>org.jupnp</groupId>
 		<artifactId>jupnp</artifactId>
-		<version>2.3.0.QC16</version>
+		<version>2.3.1.QC17</version>
 	</parent>
 
     <name>jUPnP Features</name>

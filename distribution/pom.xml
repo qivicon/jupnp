@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.jupnp</groupId>
         <artifactId>jupnp</artifactId>
-        <version>2.3.0.QC16</version>
+        <version>2.3.1.QC17</version>
     </parent>
 
     <name>jUPnP Distribution</name>
@@ -39,18 +39,37 @@
                         <goals>
                             <goal>single</goal>
                         </goals>
+                        <configuration>
+		                    <descriptors>
+		                        <descriptor>src/dist/assembly.xml</descriptor>
+		                    </descriptors>
+		                    <workDirectory>target/assembly/work</workDirectory>
+		                    <appendAssemblyId>false</appendAssemblyId>
+		                    <archiveBaseDirectory>../</archiveBaseDirectory>
+		                    <!-- Quality software! Just ignore the warning... http://jira.codehaus.org/browse/MASSEMBLY-289 -->
+		                    <attach>false</attach>
+		                    <finalName>jupnp-distribution-${project.version}</finalName>
+		                </configuration>
                     </execution>
-                </executions>
-                <configuration>
-                    <descriptors>
-                        <descriptor>src/dist/assembly.xml</descriptor>
-                    </descriptors>
-                    <workDirectory>target/assembly/work</workDirectory>
-                    <appendAssemblyId>false</appendAssemblyId>
-                    <archiveBaseDirectory>../</archiveBaseDirectory>
-                    <!-- Quality software! Just ignore the warning... http://jira.codehaus.org/browse/MASSEMBLY-289 -->
-                    <attach>false</attach>
-                </configuration>
+                    <execution>
+                        <id>package-p2repo</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+		                    <descriptors>
+		                        <descriptor>src/dist/assembly.p2repo.xml</descriptor>
+		                    </descriptors>
+		                    <workDirectory>target/assembly/work</workDirectory>
+		                    <appendAssemblyId>false</appendAssemblyId>
+		                    <archiveBaseDirectory>../</archiveBaseDirectory>
+		                    <!-- Quality software! Just ignore the warning... http://jira.codehaus.org/browse/MASSEMBLY-289 -->
+		                    <attach>false</attach>
+		                    <finalName>p2repo-${project.version}</finalName>
+		                </configuration>
+                    </execution>
+                </executions>                
             </plugin>
 			<plugin>
 				<groupId>${tycho-groupid}</groupId>
