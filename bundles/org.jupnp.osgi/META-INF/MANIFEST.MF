@@ -26,5 +26,6 @@ Import-Package: org.apache.commons.codec.binary,
  org.osgi.framework,
  org.osgi.service.device,
  org.osgi.service.event,
+ org.osgi.service.upnp,
  org.osgi.util.tracker,
  org.slf4j
