@@ -22,7 +22,6 @@
 				<version>${tycho-version}</version>
 				<extensions>true</extensions>
 			</plugin>
-
             <plugin>
                 <artifactId>maven-deploy-plugin</artifactId>
                 <configuration>
@@ -30,7 +29,7 @@
                 </configuration>
             </plugin>
 
-            <plugin>
+            <!--plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <executions>
                     <execution>
@@ -48,10 +47,10 @@
                     <workDirectory>target/assembly/work</workDirectory>
                     <appendAssemblyId>false</appendAssemblyId>
                     <archiveBaseDirectory>../</archiveBaseDirectory>
-                    <!-- Quality software! Just ignore the warning... http://jira.codehaus.org/browse/MASSEMBLY-289 -->
+                   
                     <attach>false</attach>
                 </configuration>
-            </plugin>
+            </plugin-->
 			<plugin>
 				<groupId>${tycho-groupid}</groupId>
 				<artifactId>target-platform-configuration</artifactId>
