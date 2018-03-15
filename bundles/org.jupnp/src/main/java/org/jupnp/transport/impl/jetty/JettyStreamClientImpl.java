@@ -63,6 +63,7 @@ public class JettyStreamClientImpl extends AbstractStreamClient<StreamClientConf
         // These are some safety settings, we should never run into these timeouts as we
         // do our own expiration checking
         httpClient.setConnectTimeout((getConfiguration().getTimeoutSeconds() + 5) * 1000);
+        httpClient.setMaxConnectionsPerDestination(2);
 
         final QueuedThreadPool queuedThreadPool = createThreadPool("jupnp-jetty-client", 5, 5, 60000);
 
