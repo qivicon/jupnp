@@ -14,7 +14,10 @@
 
 package org.jupnp.protocol.async;
 
+import java.util.concurrent.Executor;
+
 import org.jupnp.UpnpService;
+import org.jupnp.UpnpServiceConfiguration;
 import org.jupnp.model.ValidationError;
 import org.jupnp.model.ValidationException;
 import org.jupnp.model.message.IncomingDatagramMessage;
@@ -91,10 +94,20 @@ public class ReceivingSearchResponse extends ReceivingAsync<IncomingSearchRespon
 
         // Unfortunately, we always have to retrieve the descriptor because at this point we
         // have no idea if it's a root or embedded device
-        getUpnpService().getConfiguration().getAsyncProtocolExecutor().execute(
-                new RetrieveRemoteDescriptors(getUpnpService(), rd)
-        );
 
+        if (RetrieveRemoteDescriptors.isRetrievalInProgress(rd)) {
+            log.trace("Skip submitting task, active retrieval for URL already in progress:{}",
+                    rd.getIdentity().getDescriptorURL());
+            return;
+        }
+
+        UpnpServiceConfiguration conf = getUpnpService().getConfiguration();
+        if (conf != null) {
+            Executor executor = conf.getAsyncProtocolExecutor();
+            if (executor != null) {
+                executor.execute(new RetrieveRemoteDescriptors(getUpnpService(), rd));
+            }
+        }
     }
 
 }
